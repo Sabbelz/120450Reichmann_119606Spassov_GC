@@ -5,13 +5,13 @@
  * default constructor
  */
 SceneGraph::SceneGraph():
-    name_{"SceneGraph"},
+    name_("SceneGraph"),
     root_(std::make_shared<Node>("root"))
     { }
 
 /**
  * Method which returns the name of the SceneGraph
- * @return
+ * @return the requested name
  */
 std::string SceneGraph::getName() const {
     return name_;
@@ -41,6 +41,14 @@ void SceneGraph::setRoot(std::shared_ptr<Node> const& Node) {
     root_ = Node;
 }
 
+/**
+ * Method for printing the graph
+ * @return
+ */
 std::string SceneGraph::printGraph() const {
-
+    std::string printValue = "Root";
+    for (auto child : root_ ->getChildrenList()){
+        printValue = printValue + child.getName();
+    }
+    std::cout << printValue << "\n";
 }

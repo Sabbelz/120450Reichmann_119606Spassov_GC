@@ -10,39 +10,39 @@
 
 class Node {
 public:
-    Node();
+    Node(std::string name);
 
-    Node(std::string const& name);
+    Node(std::string name, std::shared_ptr<Node> parent);
 
-    Node(std::string const& name, std::shared_ptr<Node> parent);
+    Node(std::string name, std::shared_ptr<Node> parent, glm::mat4 localTransform);
 
-    virtual ~Node() {};
+    ~Node() {};
 
-    virtual Node getParent() const;
+    std::shared_ptr<Node> getParent() const;
 
-    virtual void setParent(Node const& parent);
+    void setParent(std::shared_ptr<Node> parent);
 
-    virtual Node getChildren(std::string const& children) const;
+    std::shared_ptr<Node> getChildren(std::string const& children) const;
 
-    virtual std::list<Node> getChildrenList() const;
+    std::list<std::shared_ptr<Node>> getChildrenList() const;
 
-    virtual std::string getName() const;
+    std::string getName() const;
 
-    virtual std::string getPath() const;
+    std::string getPath() const;
 
-    virtual int getDepth() const;
+    int getDepth() const;
 
-    virtual glm::mat4 getLocalTransform() const;
+    glm::mat4 getLocalTransform() const;
 
-    virtual void setLocalTransform(glm::mat4 const& mat);
+    void setLocalTransform(glm::mat4 const& mat);
 
-    virtual glm::mat4 getWorldTransform() const;
+    glm::mat4 getWorldTransform() const;
 
-    virtual void setWorldTransform(glm::mat4 const& mat);
+    void setWorldTransform(glm::mat4 const& mat);
 
-    virtual void addChildren(Node const& children);
+    void addChildren(std::shared_ptr<Node> children);
 
-    virtual void removeChildren(std::string const& children);
+    void removeChildren(std::string const& children);
 
 protected:
     std::shared_ptr<Node> parent_;
