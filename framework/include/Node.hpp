@@ -34,7 +34,7 @@ public:
 
     glm::mat4 getLocalTransform() const;
 
-    void setLocalTransform(glm::mat4 const& mat);
+    void setLocalTransform(glm::mat4 mat);
 
     glm::mat4 getWorldTransform() const;
 

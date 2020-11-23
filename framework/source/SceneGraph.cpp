@@ -10,6 +10,16 @@ SceneGraph::SceneGraph():
     { }
 
 /**
+ * THis method provides the singleton for the scene graph
+ * @return the instance of the scene graph
+ */
+SceneGraph* SceneGraph::instance() {
+    if(!instance_){
+        instance_ = new SceneGraph();
+    }
+    return instance_;
+}
+/**
  * Method which returns the name of the SceneGraph
  * @return the requested name
  */
@@ -43,12 +53,12 @@ void SceneGraph::setRoot(std::shared_ptr<Node> const& Node) {
 
 /**
  * Method for printing the graph
- * @return
+ * @return the graph as a string
  */
 std::string SceneGraph::printGraph() const {
     std::string printValue = "Root";
     for (auto child : root_ ->getChildrenList()){
-        printValue = printValue + child.getName();
+        printValue = printValue + child->getName();
     }
-    std::cout << printValue << "\n";
+    return printValue;
 }

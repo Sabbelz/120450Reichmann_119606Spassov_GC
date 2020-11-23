@@ -58,7 +58,11 @@ void Node::setParent(std::shared_ptr<Node> parent) {
  * @return a pointer to the wanted children
  */
 std::shared_ptr<Node> Node::getChildren(const std::string &children) const {
-//TODO getChildren
+    for(auto const& it: children_){
+        if(it->getName()==children){
+            return it;
+        }
+    }
 }
 
 /**
@@ -105,8 +109,8 @@ glm::mat4 Node::getLocalTransform() const {
  * Method for setting the local Transform
  * @param mat the given and new local Transform
  */
-void Node::setLocalTransform(const glm::mat4 &mat) {
-//TODO setLocalTransform
+void Node::setLocalTransform(glm::mat4 mat) {
+    localTransform_ = mat;
 }
 
 /**
@@ -114,7 +118,7 @@ void Node::setLocalTransform(const glm::mat4 &mat) {
  * @return the wanted world transform
  */
 glm::mat4 Node::getWorldTransform() const {
-    return worldTransform_;//TODO
+    return worldTransform_;//TODO correct?
 }
 
 /**
@@ -138,7 +142,11 @@ void Node::addChildren(std::shared_ptr<Node> children) {
  * @param children the child which has to be removed
  */
 void Node::removeChildren(const std::string &children) {
-
+    for(auto const& it: children_){
+        if(it->getName()==children){
+            children_.remove(it);
+        }
+    }
 }
 
 
