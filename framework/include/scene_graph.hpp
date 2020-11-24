@@ -5,6 +5,7 @@
 #include "node.hpp"
 #include "camera_node.hpp"
 #include "geometry_node.hpp"
+#include "light_node.hpp"
 
 class SceneGraph { //Singleton -> https://de.wikibooks.org/wiki/C%2B%2B-Programmierung:_Entwurfsmuster:_Singleton
 public:
@@ -29,6 +30,7 @@ private:
     static SceneGraph* instance_;
     std::string name_;
     std::shared_ptr<Node> root_;
+    static bool initialization_status_;
 
 
 };

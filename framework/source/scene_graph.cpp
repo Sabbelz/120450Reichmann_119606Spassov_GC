@@ -1,6 +1,12 @@
 #include "scene_graph.hpp"
 
 
+// static member pre-initialization:
+// bool for checking if initialization occurred (needs to be static so it can be called without existing instance)
+bool SceneGraph::initialization_status_ = false;
+// uninitialized scene graph points to nullptr
+SceneGraph* SceneGraph::instance_ = nullptr;
+
 /**
  * default constructor
  */
@@ -14,10 +20,13 @@ SceneGraph::SceneGraph():
  * @return the instance of the scene graph
  */
 SceneGraph* SceneGraph::getSceneGraphInstance() {
-    if(!instance_){
+    if(!initialization_status_){
+        initialization_status_ = true;
         instance_ = new SceneGraph();
+        return instance_;
+    } else {
+        return instance_;
     }
-    return instance_;
 }
 /**
  * Method which returns the name of the SceneGraph

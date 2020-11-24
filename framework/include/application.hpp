@@ -43,7 +43,7 @@ class Application {
  protected:
   void updateUniformLocations();
 
-  std::string m_resource_path; 
+  std::string m_resource_path_;
 
   // container for the shader programs
   std::map<std::string, shader_program> m_shaders{};

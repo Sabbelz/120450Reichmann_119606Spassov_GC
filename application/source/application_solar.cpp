@@ -25,6 +25,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
  ,m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
+  initializeSceneGraph();
   initializeGeometry();
   initializeShaderPrograms();
 }
@@ -83,8 +84,8 @@ void ApplicationSolar::uploadUniforms() {
 // load shader sources
 void ApplicationSolar::initializeShaderPrograms() {
   // store shader program objects in container
-  m_shaders.emplace("planet", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/simple.vert"},
-                                           {GL_FRAGMENT_SHADER, m_resource_path + "shaders/simple.frag"}}});
+  m_shaders.emplace("planet", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/simple.vert"},
+                                           {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/simple.frag"}}});
   // request uniform locations for shader program
   m_shaders.at("planet").u_locs["NormalMatrix"] = -1;
   m_shaders.at("planet").u_locs["ModelMatrix"] = -1;
@@ -94,7 +95,7 @@ void ApplicationSolar::initializeShaderPrograms() {
 
 // load models
 void ApplicationSolar::initializeGeometry() {
-  model planet_model = model_loader::obj(m_resource_path + "models/sphere.obj", model::NORMAL);
+  model planet_model = model_loader::obj(m_resource_path_ + "models/sphere.obj", model::NORMAL);
 
   // generate vertex array object
   glGenVertexArrays(1, &planet_object.vertex_AO);
@@ -132,13 +133,24 @@ void ApplicationSolar::initializeGeometry() {
 
 void ApplicationSolar::initializeSceneGraph(){
     /* TODO LIST:
-     * - getting SceneGraph instance
      * - initialize all planets, the moon and the sun
-     * - load this sphere.obj thing as base for all solar bodies
      * - think how to position the camera
      * - decide on some good local transformation parameters for the different bodies
      * - root -> body -> body_geom (exception moon)
      * */
+
+    // link scene graph singleton to the application
+    scene_graph_ = SceneGraph::getSceneGraphInstance();
+    //scene_graph_->setName("hi");
+
+    // resource_path_ is assigned in the read_resource_path() function in utils.cpp as "/../../resources/"
+    std::string sphere_object_path = m_resource_path_ + "models/sphere.obj";
+    // load sphere.obj, this model is the base for all solar bodies which are spherical
+    model planet_model = model_loader::obj(sphere_object_path, model::POSITION);
+    // get a pointer to the scene root, which will be the parent node of the solar system
+    std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
+
+
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
@@ -175,11 +187,11 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
 
     // rotate camera in the right or left handside
     //TODO: kinda not exactly like I expected it, needs another try
-    if (key == GLFW_KEY_Y && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::rotate(m_view_transform, glm::radians(2.0f), glm::vec3{0.0f, 1.0f, 0.0f});
+    if (key == GLFW_KEY_Z && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::rotate(m_view_transform, glm::radians(0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     } else if(key == GLFW_KEY_X && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::rotate(m_view_transform, glm::radians(-2.0f), glm::vec3{0.0f, 1.0f, 0.0f});
+        m_view_transform = glm::rotate(m_view_transform, glm::radians(-0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     }
 }
@@ -187,8 +199,8 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
 //handle delta mouse movement input
 void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
   // mouse handling
-    m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_x), glm::vec3{0.0f, 1.0f, 0.0f});
-    m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_y), glm::vec3{1.0f, 0.0f, 0.0f});
+    //m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_x), glm::vec3{0.0f, 1.0f, 0.0f});
+    //m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_y), glm::vec3{1.0f, 0.0f, 0.0f});
 }
 
 //handle resizing

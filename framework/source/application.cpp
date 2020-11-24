@@ -18,8 +18,8 @@ const glm::uvec2 Application::initial_resolution = {640u, 480u};
 const float Application::initial_aspect_ratio = float(initial_resolution.x) / float(initial_resolution.y);
 
 Application::Application(std::string const& resource_path)
- :m_resource_path{resource_path}
- ,m_shaders{}
+ : m_resource_path_{resource_path}
+ , m_shaders{}
 {}
 
 Application::~Application() {
