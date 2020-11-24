@@ -57,8 +57,8 @@ void SceneGraph::setRoot(std::shared_ptr<Node> const& Node) {
  */
 std::string SceneGraph::printGraph() const {
     std::string printValue = "Root";
-    for (auto child : root_ ->getChildrenList()){
-        printValue = printValue + child->getName();
+    for (auto const& child : root_ ->getChildrenList()){
+        printValue += child->getName();
     }
     return printValue;
 }

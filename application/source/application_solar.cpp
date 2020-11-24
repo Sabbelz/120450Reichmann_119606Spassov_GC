@@ -79,7 +79,7 @@ void ApplicationSolar::uploadUniforms() {
   uploadProjection();
 }
 
-///////////////////////////// intialisation functions /////////////////////////
+///////////////////////////// initialisation functions /////////////////////////
 // load shader sources
 void ApplicationSolar::initializeShaderPrograms() {
   // store shader program objects in container
@@ -130,17 +130,47 @@ void ApplicationSolar::initializeGeometry() {
   planet_object.num_elements = GLsizei(planet_model.indices.size());
 }
 
-///////////////////////////// callback functions for window events ////////////
-// handle key input
+///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
+// handling key input, press key once for single step, keep key pressed for lasting movement
 void ApplicationSolar::keyCallback(int key, int action, int mods) {
-  if (key == GLFW_KEY_W  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-    m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, -0.1f});
-    uploadView();
-  }
-  else if (key == GLFW_KEY_S  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-    m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, 0.1f});
-    uploadView();
-  }
+
+    // moving camera forward or moving camera backwards (W,S)
+    if (key == GLFW_KEY_W  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+      m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, -0.1f});
+      uploadView();
+    }
+    else if (key == GLFW_KEY_S  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+      m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, 0.1f});
+      uploadView();
+    }
+
+    // moving camera to the right or left handside (A,D)
+    if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.1f,0.0f,0.0f});
+        uploadView();
+    } else if(key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.1f,0.0f,0.0f});
+        uploadView();
+    }
+
+    // moving camera up and down (C,V)
+    if (key == GLFW_KEY_V && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f,0.1f,0.0f});
+        uploadView();
+    } else if(key == GLFW_KEY_C && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f,-0.1f,0.0f});
+        uploadView();
+    }
+
+    // rotate camera in the right or left handside
+    //TODO: kinda not exactly like I expected it, needs another try
+    if (key == GLFW_KEY_Y && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::rotate(m_view_transform, 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+        uploadView();
+    } else if(key == GLFW_KEY_X && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+        m_view_transform = glm::rotate(m_view_transform, -2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+        uploadView();
+    }
 }
 
 //handle delta mouse movement input
