@@ -13,7 +13,7 @@ SceneGraph::SceneGraph():
  * THis method provides the singleton for the scene graph
  * @return the instance of the scene graph
  */
-SceneGraph* SceneGraph::instance() {
+SceneGraph* SceneGraph::getSceneGraphInstance() {
     if(!instance_){
         instance_ = new SceneGraph();
     }

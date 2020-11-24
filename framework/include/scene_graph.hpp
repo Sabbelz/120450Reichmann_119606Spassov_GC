@@ -13,7 +13,7 @@ public:
 
     ~SceneGraph();
 
-    static SceneGraph* instance();
+    static SceneGraph* getSceneGraphInstance();
 
     std::string getName() const;
 

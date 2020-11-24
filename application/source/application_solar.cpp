@@ -130,6 +130,17 @@ void ApplicationSolar::initializeGeometry() {
   planet_object.num_elements = GLsizei(planet_model.indices.size());
 }
 
+void ApplicationSolar::initializeSceneGraph(){
+    /* TODO LIST:
+     * - getting SceneGraph instance
+     * - initialize all planets, the moon and the sun
+     * - load this sphere.obj thing as base for all solar bodies
+     * - think how to position the camera
+     * - decide on some good local transformation parameters for the different bodies
+     * - root -> body -> body_geom (exception moon)
+     * */
+}
+
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
 // handling key input, press key once for single step, keep key pressed for lasting movement
 void ApplicationSolar::keyCallback(int key, int action, int mods) {
