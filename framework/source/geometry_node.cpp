@@ -1,4 +1,4 @@
-#include "GeometryNode.hpp"
+#include "geometry_node.hpp"
 
 /**
  * Method which returns the geometry

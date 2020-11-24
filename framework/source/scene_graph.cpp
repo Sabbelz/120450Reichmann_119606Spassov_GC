@@ -1,4 +1,4 @@
-#include "SceneGraph.hpp"
+#include "scene_graph.hpp"
 
 
 /**

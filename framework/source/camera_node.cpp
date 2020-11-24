@@ -1,4 +1,4 @@
-#include "CameraNode.hpp"
+#include "camera_node.hpp"
 
 /**
  * One of three constructors for the camera node

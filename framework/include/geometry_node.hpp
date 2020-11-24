@@ -3,7 +3,7 @@
 #define GEOMETRYNODE_HPP
 
 #include "model.hpp"
-#include "Node.hpp"
+#include "node.hpp"
 
 class GeometryNode : public Node {
 public:

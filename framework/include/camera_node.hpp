@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <string>
-#include "Node.hpp"
+#include "node.hpp"
 
 class CameraNode : public Node{
 public:

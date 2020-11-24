@@ -1,13 +1,13 @@
-#include "Node.hpp"
+#include "node.hpp"
 
 /**
  * Default constructor (depth is default == 0)
  * @param name the given name
  */
-Node::Node(std::string name):
+Node::Node(std::string const& name):
+    parent_(nullptr),
     name_(name),
-    path_("/" + name),
-    parent_(nullptr)
+    path_("/" + name)
 { }
 
 /**
@@ -15,10 +15,10 @@ Node::Node(std::string name):
  * @param name the given name
  * @param parent the given parent node
  */
-Node::Node(std::string name, std::shared_ptr<Node> parent):
+Node::Node(std::string const& name, std::shared_ptr<Node> parent):
+    parent_(parent),
     name_(name),
     path_(getPath()),
-    parent_(parent),
     depth_(parent->getDepth() + 1)
 { }
 
@@ -28,12 +28,12 @@ Node::Node(std::string name, std::shared_ptr<Node> parent):
  * @param parent the given parent node
  * @param localTransform the local transform which has to be set
  */
-Node::Node(std::string name, std::shared_ptr<Node> parent, glm::mat4 localTransform):
+Node::Node(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform):
+        parent_(parent),
         name_(name),
         path_(getPath()),
-        parent_(parent),
-        localTransform_(localTransform),
-        depth_(parent->getDepth() + 1)
+        depth_(parent->getDepth() + 1),
+        localTransform_(localTransform)
 { }
 
 /**
@@ -109,7 +109,7 @@ glm::mat4 Node::getLocalTransform() const {
  * Method for setting the local Transform
  * @param mat the given and new local Transform
  */
-void Node::setLocalTransform(glm::mat4 mat) {
+void Node::setLocalTransform(glm::mat4 const& mat) {
     localTransform_ = mat;
 }
 

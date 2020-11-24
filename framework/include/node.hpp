@@ -10,11 +10,11 @@
 
 class Node {
 public:
-    Node(std::string name);
+    explicit Node(std::string const& name);
 
-    Node(std::string name, std::shared_ptr<Node> parent);
+    Node(std::string const& name, std::shared_ptr<Node> parent);
 
-    Node(std::string name, std::shared_ptr<Node> parent, glm::mat4 localTransform);
+    Node(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform);
 
     ~Node() {};
 
@@ -34,7 +34,7 @@ public:
 
     glm::mat4 getLocalTransform() const;
 
-    void setLocalTransform(glm::mat4 mat);
+    void setLocalTransform(glm::mat4 const& mat);
 
     glm::mat4 getWorldTransform() const;
 
