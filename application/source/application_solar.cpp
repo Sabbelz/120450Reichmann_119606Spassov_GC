@@ -165,10 +165,10 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
     // rotate camera in the right or left handside
     //TODO: kinda not exactly like I expected it, needs another try
     if (key == GLFW_KEY_Y && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::rotate(m_view_transform, 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+        m_view_transform = glm::rotate(m_view_transform, glm::radians(2.0f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     } else if(key == GLFW_KEY_X && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::rotate(m_view_transform, -2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
+        m_view_transform = glm::rotate(m_view_transform, glm::radians(-2.0f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     }
 }
@@ -176,6 +176,8 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
 //handle delta mouse movement input
 void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
   // mouse handling
+    m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_x), glm::vec3{0.0f, 1.0f, 0.0f});
+    m_view_transform = glm::rotate(m_view_transform, glm::radians((float) pos_y), glm::vec3{1.0f, 0.0f, 0.0f});
 }
 
 //handle resizing

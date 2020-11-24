@@ -1,5 +1,5 @@
-#ifndef SCENEGRAPH_HPP
-#define SCENEGRAPH_HPP
+#ifndef SCENE_GRAPH_HPP
+#define SCENE_GRAPH_HPP
 
 #include <string>
 #include "node.hpp"
@@ -33,4 +33,4 @@ private:
 
 };
 
-#endif //SCENEGRAPH_HPP
+#endif //SCENE_GRAPH_HPP

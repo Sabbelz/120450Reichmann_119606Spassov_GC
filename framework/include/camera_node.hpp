@@ -1,5 +1,5 @@
-#ifndef CAMERANODE_HPP
-#define CAMERANODE_HPP
+#ifndef CAMERA_NODE_HPP
+#define CAMERA_NODE_HPP
 
 #include <glm/glm.hpp>
 #include <string>
@@ -31,4 +31,4 @@ private:
     glm::mat4 projectionMatrix_;
 };
 
-#endif //CAMERANODE_HPP
+#endif //CAMERA_NODE_HPP
