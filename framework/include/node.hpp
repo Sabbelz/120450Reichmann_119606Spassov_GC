@@ -22,7 +22,7 @@ public:
 
     void setParent(std::shared_ptr<Node> parent);
 
-    std::shared_ptr<Node> getChildren(std::string const& children) const;
+    std::shared_ptr<Node> getChildren(std::string const& child_name) const;
 
     std::list<std::shared_ptr<Node>> getChildrenList() const;
 

@@ -47,7 +47,7 @@ protected:
     // camera transform matrix
     glm::fmat4 m_view_transform;
     // camera projection matrix
-    glm::fmat4 m_view_projection;
+    glm::fmat4 m_view_projection_;
 };
 
 #endif

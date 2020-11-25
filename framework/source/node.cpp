@@ -53,16 +53,24 @@ void Node::setParent(std::shared_ptr<Node> parent) {
 }
 
 /**
- * Method which returns the wanted children of the node
- * @param children the children which has to be found
- * @return a pointer to the wanted children
+ * Method which returns the first found child found in its children tree with matching name.
+ * It will do so recursively.
+ * @param child_name the child which has to be found
+ * @return a pointer to the wanted children or nullptr in case of no success
  */
-std::shared_ptr<Node> Node::getChildren(const std::string &children) const {
-    for(auto const& it: children_){
-        if(it->getName()==children){
-            return it;
+std::shared_ptr<Node> Node::getChildren(std::string const& child_name) const {
+    for (auto const& child: children_){
+        if (child->name_ == child_name){
+            return child;
+        } else {
+            auto next_level_search = child->getChildren(child_name);
+            if (next_level_search != nullptr) {
+                return next_level_search;
+            }
         }
     }
+    // attention of behaviour in case of no success: nullptr will be returned
+    return nullptr;
 }
 
 /**
