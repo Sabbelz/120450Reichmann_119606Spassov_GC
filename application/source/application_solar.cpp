@@ -52,23 +52,25 @@ void ApplicationSolar::render() const {
     solar_bodies[9] = "neptune_geom";
     solar_bodies[10] = "pluto_geom";
 
+    int random_counter = 0;
+    // this should render like all of the solar bodies
     for (auto const& name: solar_bodies){
+        random_counter++;
         std::shared_ptr<Node> solar_body = scene_root->getChildren(name);
-        glm::mat4x4 local_transform_matrix = solar_body->getLocalTransform();
+        glm::mat4x4 parents_local_transform_matrix = solar_body->getParent()->getLocalTransform();
         glm::mat4x4 rotation_matrix = {};
         if (name == "moon_geom"){
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.00005f, glm::fvec3{0.0f, 1.0f, 0.0f});
+            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.005f, glm::fvec3{0.0f, 1.0f, 0.0f});
         } else {
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0003f, glm::fvec3{0.0f, 1.0f, 0.0f});
+            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0005f + (float)(11-random_counter) * 0.00001f, glm::fvec3{0.0f, 1.0f, 0.0f});
         }
 
+        auto test = rotation_matrix * parents_local_transform_matrix;
+
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
-        auto test = rotation_matrix * local_transform_matrix;
-        auto test2 = solar_body->getParent();
-        test2->setLocalTransform(test);
-        solar_body->getParent()->setLocalTransform(test);
+        solar_body->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
         // fetch model matrix from the world transform of the solar body
-        glm::mat4x4 model_matrix = solar_body->getParent()->getWorldTransform();
+        glm::mat4x4 model_matrix = solar_body->getWorldTransform();
 
         // bind shader to upload uniforms
         glUseProgram(m_shaders.at("planet").handle);
@@ -284,7 +286,7 @@ void ApplicationSolar::initializeSceneGraph(){
     scene_root->addChildren(hades);
     hades->addChildren(pluto_geom);
 
-    ////////// Dionysus ////////// (god of theater, so he kinda fits the camera job)
+    ////////// Dionysus(Camera) ////////// (god of theater, so he kinda fits the camera job)
     std::shared_ptr<CameraNode> dionysus = std::make_shared<CameraNode>("dionysus", true, true,
                                                                       m_view_projection_, scene_root);
     scene_root->addChildren(dionysus);
@@ -324,7 +326,6 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
     }
 
     // rotate camera in the right or left handside
-    //TODO: kinda not exactly like I expected it, needs another try
     if (key == GLFW_KEY_Z && (action == GLFW_PRESS || action == GLFW_REPEAT)){
         m_view_transform = glm::rotate(m_view_transform, glm::radians(0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();

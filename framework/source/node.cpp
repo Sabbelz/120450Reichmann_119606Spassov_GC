@@ -7,7 +7,8 @@
 Node::Node(std::string const& name):
     parent_(nullptr),
     name_(name),
-    path_("/" + name)
+    path_("/" + name),
+    depth_(0)
 { }
 
 /**
@@ -50,6 +51,8 @@ std::shared_ptr<Node> Node::getParent() const {
  */
 void Node::setParent(std::shared_ptr<Node> parent) {
     parent_ = parent;
+    depth_ = parent_->getDepth() + 1;
+    path_ = parent_->getPath() + "/" + name_;
 }
 
 /**
@@ -110,15 +113,15 @@ int Node::getDepth() const {
  * @return the requested local transform
  */
 glm::mat4x4 Node::getLocalTransform() const {
-    return glm::mat4();
+    return local_transform_;
 }
 
 /**
  * Method for setting the local Transform
  * @param mat the given and new local Transform
  */
-void Node::setLocalTransform(glm::mat4x4 const& mat) {
-    local_transform_ = mat;
+void Node::setLocalTransform(glm::mat4x4 const& new_local_transform) {
+    local_transform_ = new_local_transform;
 }
 
 /**
@@ -148,8 +151,8 @@ void Node::setWorldTransform(glm::mat4x4 const& mat) {
  * Method which adds a new child to the node
  * @param children the new child
  */
-void Node::addChildren(std::shared_ptr<Node> children) {
-    children_.push_back(children);
+void Node::addChildren(std::shared_ptr<Node> child) {
+    children_.push_back(child);
 }
 
 /**
