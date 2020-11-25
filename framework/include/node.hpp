@@ -32,13 +32,13 @@ public:
 
     int getDepth() const;
 
-    glm::mat4 getLocalTransform() const;
+    glm::mat4x4 getLocalTransform() const;
 
-    void setLocalTransform(glm::mat4 const& mat);
+    void setLocalTransform(glm::mat4x4 const& mat);
 
-    glm::mat4 getWorldTransform() const;
+    glm::mat4x4 getWorldTransform() const;
 
-    void setWorldTransform(glm::mat4 const& mat);
+    void setWorldTransform(glm::mat4x4 const& mat);
 
     void addChildren(std::shared_ptr<Node> children);
 
@@ -49,10 +49,9 @@ protected:
     std::list<std::shared_ptr<Node>> children_;
     std::string name_;
     std::string path_;
-
     int depth_ = 0;
-    glm::mat4 localTransform_;
-    glm::mat4 worldTransform_;
+    glm::mat4x4 local_transform_;
+    glm::mat4x4 world_transform_;
 
 
 };

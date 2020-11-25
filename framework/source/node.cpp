@@ -18,7 +18,7 @@ Node::Node(std::string const& name):
 Node::Node(std::string const& name, std::shared_ptr<Node> parent):
     parent_(parent),
     name_(name),
-    path_(getPath()),
+    path_("/" + name + parent->getPath()),
     depth_(parent->getDepth() + 1)
 { }
 
@@ -31,9 +31,9 @@ Node::Node(std::string const& name, std::shared_ptr<Node> parent):
 Node::Node(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform):
         parent_(parent),
         name_(name),
-        path_(getPath()),
+        path_("/" + name + parent->getPath()),
         depth_(parent->getDepth() + 1),
-        localTransform_(localTransform)
+        local_transform_(localTransform)
 { }
 
 /**
@@ -101,7 +101,7 @@ int Node::getDepth() const {
  * Method for receiving the local transform
  * @return the requested local transform
  */
-glm::mat4 Node::getLocalTransform() const {
+glm::mat4x4 Node::getLocalTransform() const {
     return glm::mat4();
 }
 
@@ -109,24 +109,24 @@ glm::mat4 Node::getLocalTransform() const {
  * Method for setting the local Transform
  * @param mat the given and new local Transform
  */
-void Node::setLocalTransform(glm::mat4 const& mat) {
-    localTransform_ = mat;
+void Node::setLocalTransform(glm::mat4x4 const& mat) {
+    local_transform_ = mat;
 }
 
 /**
  * returns the world transform
  * @return the wanted world transform
  */
-glm::mat4 Node::getWorldTransform() const {
-    return worldTransform_;//TODO correct?
+glm::mat4x4 Node::getWorldTransform() const {
+    return world_transform_;//TODO correct?
 }
 
 /**
  * Method which sets world transform
  * @param mat the given world transform
  */
-void Node::setWorldTransform(const glm::mat4 &mat) {
-    worldTransform_ = mat;
+void Node::setWorldTransform(glm::mat4x4 const& mat) {
+    world_transform_ = mat;
 }
 
 /**
