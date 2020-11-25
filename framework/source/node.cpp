@@ -122,11 +122,18 @@ void Node::setLocalTransform(glm::mat4x4 const& mat) {
 }
 
 /**
- * returns the world transform
- * @return the wanted world transform
+ * Method for getting the world transformation matrix of the node.
+ * In the case of the node being the root, its local matrix is considered the matrix of the world.
+ * Otherwise the world matrix of the parent will be multiplied with the local matrix,
+ * creating the world matrix for this node.
+ * @return the wanted matrix
  */
 glm::mat4x4 Node::getWorldTransform() const {
-    return world_transform_;//TODO correct?
+    if (parent_ == nullptr){
+        return local_transform_;
+    } else {
+        return parent_->getWorldTransform() * local_transform_;
+    }
 }
 
 /**
