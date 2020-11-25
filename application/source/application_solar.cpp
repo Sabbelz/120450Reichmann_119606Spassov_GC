@@ -60,9 +60,9 @@ void ApplicationSolar::render() const {
         glm::mat4x4 parents_local_transform_matrix = solar_body->getParent()->getLocalTransform();
         glm::mat4x4 rotation_matrix = {};
         if (name == "moon_geom"){
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.005f, glm::fvec3{0.0f, 1.0f, 0.0f});
+            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0005f, glm::fvec3{0.0f, 1.0f, 0.0f});
         } else {
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0005f + (float)(11-random_counter) * 0.00001f, glm::fvec3{0.0f, 1.0f, 0.0f});
+            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.00005f + (float)(11-random_counter) * 0.00001f, glm::fvec3{0.0f, 1.0f, 0.0f});
         }
 
         auto test = rotation_matrix * parents_local_transform_matrix;
@@ -224,8 +224,8 @@ void ApplicationSolar::initializeSceneGraph(){
     terra->addChildren(earth_geom);
 
     ////////// Moon //////////
-    std::shared_ptr<Node> artemis = std::make_shared<Node>("artemis", scene_root,
-                                                         glm::translate({}, glm::fvec3{1.5f, 0.0f, 0.0f}));
+    std::shared_ptr<Node> artemis = std::make_shared<Node>("artemis", terra,
+                                                         glm::translate({}, glm::fvec3{0.1f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> moon_geom = std::make_shared<GeometryNode>("moon_geom", artemis,
                                                                               glm::scale({}, glm::fvec3{0.0125f, 0.0125f, 0.0125f }),
                                                                               sphere_model);
