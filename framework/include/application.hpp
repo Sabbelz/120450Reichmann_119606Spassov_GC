@@ -29,7 +29,7 @@ class Application {
   // recompile shaders form source files
   void reloadShaders(bool throwing);
 
-// functiosn which are implemented in derived classes
+// functions which are implemented in derived classes
   // update uniform locations and values
   inline virtual void uploadUniforms() {};
   // react to key input
@@ -53,6 +53,7 @@ class Application {
   static const glm::uvec2 initial_resolution; 
   static const float initial_aspect_ratio;
 
+  //bool for the renderer to pause
   static bool paused_;
 };
 
@@ -63,8 +64,6 @@ class Application {
 
 template<typename T>
 void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_minor) {
-
-    paused_ = false;
 
     GLFWwindow* window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
     
