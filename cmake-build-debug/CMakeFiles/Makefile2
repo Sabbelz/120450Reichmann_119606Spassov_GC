@@ -215,8 +215,8 @@ CMakeFiles/framework.dir/clean:
 # Target rules for target CMakeFiles/solar_system.dir
 
 # All Build rule for target.
-CMakeFiles/solar_system.dir/all: external/glfw-3.1.1/src/CMakeFiles/glfw.dir/all
 CMakeFiles/solar_system.dir/all: CMakeFiles/framework.dir/all
+CMakeFiles/solar_system.dir/all: external/glfw-3.1.1/src/CMakeFiles/glfw.dir/all
 CMakeFiles/solar_system.dir/all: external/glbinding-2.1.1/source/glbinding/CMakeFiles/glbinding.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\solar_system.dir\build.make CMakeFiles/solar_system.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\solar_system.dir\build.make CMakeFiles/solar_system.dir/build

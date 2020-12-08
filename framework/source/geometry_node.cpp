@@ -13,6 +13,15 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
 {}
 
 /**
+ * Constructor which uses size, distance and speed as values to create a geometry_node with specific features.
+ */
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry, unsigned int size, unsigned int distance, float speed):
+        Node(name, parent, localTransform), geometry_(geometry),
+        size_(size),
+        distance_(distance),
+        speed_(speed)//TODO change float to vec?!
+{}
+/**
  * Method which returns the geometry
  */
 model GeometryNode::getGeometry() const {
