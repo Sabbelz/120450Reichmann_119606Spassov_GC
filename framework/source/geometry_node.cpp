@@ -35,3 +35,52 @@ model GeometryNode::getGeometry() const {
 void GeometryNode::setGeometry(model new_geometry) {
     geometry_ = new_geometry;
 }
+
+/**
+ * Method which returns the size of the geometry_node
+ * @return the requested size
+ */
+unsigned int GeometryNode::getSize() {
+    return size_;
+}
+
+/**
+ * Method which sets the size of the geometry_node
+ * @param size the given size
+ */
+void GeometryNode::setSize(unsigned int size) {
+    size_ = size;
+}
+
+/**
+ * Method which gets the Distance of the geometry_node
+ * @return the asked distance
+ */
+unsigned int GeometryNode::getDistance() {
+    return distance_;
+}
+
+/**
+ * Method which sets the distance of the geometry_node
+ * @param distance the given distance
+ */
+void GeometryNode::setDistance(unsigned int distance) {
+    distance_ = distance;
+}
+
+/**
+ * Method which returns the speed
+ * @return the requested speed value
+ */
+float GeometryNode::getSpeed() {
+    return speed_;
+}
+
+/**
+ * Sets the speed of the geometry_node
+ * @param speed the given value
+ */
+void GeometryNode::setSpeed(float speed) {
+    speed_ = speed;
+}
+

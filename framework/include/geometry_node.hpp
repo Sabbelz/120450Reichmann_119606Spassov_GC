@@ -20,6 +20,18 @@ public:
 
     void setGeometry(model new_geometry);
 
+    unsigned int getSize();
+
+    void setSize(unsigned int size);
+
+    unsigned int getDistance();
+
+    void setDistance(unsigned int distance);
+
+    float getSpeed();
+
+    void setSpeed(float speed);
+
 private:
     model geometry_;
 
