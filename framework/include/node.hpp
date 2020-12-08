@@ -30,7 +30,7 @@ public:
 
     std::string getPath();
 
-    int getDepth() const;
+    int getDepth();
 
     glm::mat4x4 getLocalTransform() const;
 

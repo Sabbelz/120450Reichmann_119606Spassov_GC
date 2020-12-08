@@ -109,8 +109,13 @@ std::string Node::getPath() {
  * Method which will return the depth
  * @return the depth
  */
-int Node::getDepth() const {
-    return depth_;
+int Node::getDepth() {
+    if(parent_ == nullptr){
+        return 0;
+    } else {
+        depth_ = parent_->getDepth() + 1;
+        return depth_;
+    }
 }
 
 /**
