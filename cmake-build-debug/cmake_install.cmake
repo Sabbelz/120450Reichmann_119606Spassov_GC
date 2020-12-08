@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/snoke/CLionProjects/CG_Assingments
+# Install script for directory: C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/CLionProjects/CG_Assingments/install")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,8 +34,8 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/cmake_install.cmake")
-  include("C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glbinding-2.1.1/cmake_install.cmake")
+  include("C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/cmake_install.cmake")
+  include("C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glbinding-2.1.1/cmake_install.cmake")
 
 endif()
 
@@ -47,5 +47,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

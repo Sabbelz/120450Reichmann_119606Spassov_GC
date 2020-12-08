@@ -96,8 +96,13 @@ std::string Node::getName() const {
  * Method for getting the path of the node
  * @return the requested path
  */
-std::string Node::getPath() const {
-    return path_;
+std::string Node::getPath() {
+    if (parent_ == nullptr){
+        return 0;
+    } else {
+        path_ = parent_->getPath() + path_;
+        return path_;
+    }
 }
 
 /**

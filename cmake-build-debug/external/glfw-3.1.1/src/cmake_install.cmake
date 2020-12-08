@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src
+# Install script for directory: C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/CLionProjects/CG_Assingments/install")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

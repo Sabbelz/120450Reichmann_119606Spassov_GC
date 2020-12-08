@@ -67,10 +67,10 @@ RM = C:\Users\snoke\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.7660.37\
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\snoke\CLionProjects\CG_Assingments
+CMAKE_SOURCE_DIR = C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -145,14 +145,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\CMakeFiles C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\external\glbinding-2.1.1\source\CMakeFiles\progress.marks
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\CMakeFiles 0
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\CMakeFiles C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\external\glbinding-2.1.1\source\CMakeFiles\progress.marks
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/clean
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/clean
 .PHONY : clean
 
 # The main clean target
@@ -162,17 +162,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/preinstall
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/preinstall
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 external/glbinding-2.1.1/source/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -198,6 +198,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /d C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
+	cd /d C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -67,10 +67,10 @@ RM = C:\Users\snoke\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.7660.37\
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\snoke\CLionProjects\CG_Assingments
+CMAKE_SOURCE_DIR = C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -145,9 +145,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\CMakeFiles C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\CMakeFiles C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\CLionProjects\CG_Assingments\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\snoke\OneDrive\Dokumente\GitHub\120450Reichmann_GC\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -281,33 +281,6 @@ external/tinyobjloader-aa07206/tiny_obj_loader.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/external/tinyobjloader-aa07206/tiny_obj_loader.cc.s
 .PHONY : external/tinyobjloader-aa07206/tiny_obj_loader.cc.s
 
-framework/source/Node.obj: framework/source/Node.cpp.obj
-
-.PHONY : framework/source/Node.obj
-
-# target to build an object file
-framework/source/Node.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/Node.cpp.obj
-.PHONY : framework/source/Node.cpp.obj
-
-framework/source/Node.i: framework/source/Node.cpp.i
-
-.PHONY : framework/source/Node.i
-
-# target to preprocess a source file
-framework/source/Node.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/Node.cpp.i
-.PHONY : framework/source/Node.cpp.i
-
-framework/source/Node.s: framework/source/Node.cpp.s
-
-.PHONY : framework/source/Node.s
-
-# target to generate assembly for a file
-framework/source/Node.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/Node.cpp.s
-.PHONY : framework/source/Node.cpp.s
-
 framework/source/application.obj: framework/source/application.cpp.obj
 
 .PHONY : framework/source/application.obj
@@ -334,6 +307,60 @@ framework/source/application.s: framework/source/application.cpp.s
 framework/source/application.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/application.cpp.s
 .PHONY : framework/source/application.cpp.s
+
+framework/source/camera_node.obj: framework/source/camera_node.cpp.obj
+
+.PHONY : framework/source/camera_node.obj
+
+# target to build an object file
+framework/source/camera_node.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/camera_node.cpp.obj
+.PHONY : framework/source/camera_node.cpp.obj
+
+framework/source/camera_node.i: framework/source/camera_node.cpp.i
+
+.PHONY : framework/source/camera_node.i
+
+# target to preprocess a source file
+framework/source/camera_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/camera_node.cpp.i
+.PHONY : framework/source/camera_node.cpp.i
+
+framework/source/camera_node.s: framework/source/camera_node.cpp.s
+
+.PHONY : framework/source/camera_node.s
+
+# target to generate assembly for a file
+framework/source/camera_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/camera_node.cpp.s
+.PHONY : framework/source/camera_node.cpp.s
+
+framework/source/geometry_node.obj: framework/source/geometry_node.cpp.obj
+
+.PHONY : framework/source/geometry_node.obj
+
+# target to build an object file
+framework/source/geometry_node.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/geometry_node.cpp.obj
+.PHONY : framework/source/geometry_node.cpp.obj
+
+framework/source/geometry_node.i: framework/source/geometry_node.cpp.i
+
+.PHONY : framework/source/geometry_node.i
+
+# target to preprocess a source file
+framework/source/geometry_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/geometry_node.cpp.i
+.PHONY : framework/source/geometry_node.cpp.i
+
+framework/source/geometry_node.s: framework/source/geometry_node.cpp.s
+
+.PHONY : framework/source/geometry_node.s
+
+# target to generate assembly for a file
+framework/source/geometry_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/geometry_node.cpp.s
+.PHONY : framework/source/geometry_node.cpp.s
 
 framework/source/model.obj: framework/source/model.cpp.obj
 
@@ -388,6 +415,87 @@ framework/source/model_loader.s: framework/source/model_loader.cpp.s
 framework/source/model_loader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/model_loader.cpp.s
 .PHONY : framework/source/model_loader.cpp.s
+
+framework/source/node.obj: framework/source/node.cpp.obj
+
+.PHONY : framework/source/node.obj
+
+# target to build an object file
+framework/source/node.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/node.cpp.obj
+.PHONY : framework/source/node.cpp.obj
+
+framework/source/node.i: framework/source/node.cpp.i
+
+.PHONY : framework/source/node.i
+
+# target to preprocess a source file
+framework/source/node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/node.cpp.i
+.PHONY : framework/source/node.cpp.i
+
+framework/source/node.s: framework/source/node.cpp.s
+
+.PHONY : framework/source/node.s
+
+# target to generate assembly for a file
+framework/source/node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/node.cpp.s
+.PHONY : framework/source/node.cpp.s
+
+framework/source/point_light_node.obj: framework/source/point_light_node.cpp.obj
+
+.PHONY : framework/source/point_light_node.obj
+
+# target to build an object file
+framework/source/point_light_node.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/point_light_node.cpp.obj
+.PHONY : framework/source/point_light_node.cpp.obj
+
+framework/source/point_light_node.i: framework/source/point_light_node.cpp.i
+
+.PHONY : framework/source/point_light_node.i
+
+# target to preprocess a source file
+framework/source/point_light_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/point_light_node.cpp.i
+.PHONY : framework/source/point_light_node.cpp.i
+
+framework/source/point_light_node.s: framework/source/point_light_node.cpp.s
+
+.PHONY : framework/source/point_light_node.s
+
+# target to generate assembly for a file
+framework/source/point_light_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/point_light_node.cpp.s
+.PHONY : framework/source/point_light_node.cpp.s
+
+framework/source/scene_graph.obj: framework/source/scene_graph.cpp.obj
+
+.PHONY : framework/source/scene_graph.obj
+
+# target to build an object file
+framework/source/scene_graph.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/scene_graph.cpp.obj
+.PHONY : framework/source/scene_graph.cpp.obj
+
+framework/source/scene_graph.i: framework/source/scene_graph.cpp.i
+
+.PHONY : framework/source/scene_graph.i
+
+# target to preprocess a source file
+framework/source/scene_graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/scene_graph.cpp.i
+.PHONY : framework/source/scene_graph.cpp.i
+
+framework/source/scene_graph.s: framework/source/scene_graph.cpp.s
+
+.PHONY : framework/source/scene_graph.s
+
+# target to generate assembly for a file
+framework/source/scene_graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\framework.dir\build.make CMakeFiles/framework.dir/framework/source/scene_graph.cpp.s
+.PHONY : framework/source/scene_graph.cpp.s
 
 framework/source/shader_loader.obj: framework/source/shader_loader.cpp.obj
 
@@ -519,18 +627,30 @@ help:
 	@echo ... external/tinyobjloader-aa07206/tiny_obj_loader.obj
 	@echo ... external/tinyobjloader-aa07206/tiny_obj_loader.i
 	@echo ... external/tinyobjloader-aa07206/tiny_obj_loader.s
-	@echo ... framework/source/Node.obj
-	@echo ... framework/source/Node.i
-	@echo ... framework/source/Node.s
 	@echo ... framework/source/application.obj
 	@echo ... framework/source/application.i
 	@echo ... framework/source/application.s
+	@echo ... framework/source/camera_node.obj
+	@echo ... framework/source/camera_node.i
+	@echo ... framework/source/camera_node.s
+	@echo ... framework/source/geometry_node.obj
+	@echo ... framework/source/geometry_node.i
+	@echo ... framework/source/geometry_node.s
 	@echo ... framework/source/model.obj
 	@echo ... framework/source/model.i
 	@echo ... framework/source/model.s
 	@echo ... framework/source/model_loader.obj
 	@echo ... framework/source/model_loader.i
 	@echo ... framework/source/model_loader.s
+	@echo ... framework/source/node.obj
+	@echo ... framework/source/node.i
+	@echo ... framework/source/node.s
+	@echo ... framework/source/point_light_node.obj
+	@echo ... framework/source/point_light_node.i
+	@echo ... framework/source/point_light_node.s
+	@echo ... framework/source/scene_graph.obj
+	@echo ... framework/source/scene_graph.i
+	@echo ... framework/source/scene_graph.s
 	@echo ... framework/source/shader_loader.obj
 	@echo ... framework/source/shader_loader.i
 	@echo ... framework/source/shader_loader.s

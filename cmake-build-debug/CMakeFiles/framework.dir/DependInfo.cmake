@@ -4,15 +4,19 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/tinyobjloader-aa07206/tiny_obj_loader.cc" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/external/tinyobjloader-aa07206/tiny_obj_loader.cc.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/Node.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/Node.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/application.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/application.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/model.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/model.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/model_loader.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/model_loader.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/shader_loader.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/shader_loader.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/texture_loader.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/texture_loader.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/utils.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/utils.cpp.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/framework/source/window_handler.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/framework/source/window_handler.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/tinyobjloader-aa07206/tiny_obj_loader.cc" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/external/tinyobjloader-aa07206/tiny_obj_loader.cc.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/application.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/application.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/camera_node.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/camera_node.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/geometry_node.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/geometry_node.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/model.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/model.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/model_loader.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/model_loader.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/node.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/node.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/point_light_node.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/point_light_node.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/scene_graph.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/scene_graph.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/shader_loader.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/shader_loader.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/texture_loader.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/texture_loader.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/utils.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/utils.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/framework/source/window_handler.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/framework/source/window_handler.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -36,8 +40,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/CMakeFiles/glbinding.dir/DependInfo.cmake"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/CMakeFiles/glbinding.dir/DependInfo.cmake"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

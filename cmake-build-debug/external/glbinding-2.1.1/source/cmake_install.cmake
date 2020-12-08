@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/snoke/CLionProjects/CG_Assingments/external/glbinding-2.1.1/source
+# Install script for directory: C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glbinding-2.1.1/source
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/CLionProjects/CG_Assingments/install")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,12 +33,12 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glbinding-2.1.1/source/include/glbinding")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glbinding-2.1.1/source/include/glbinding")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/cmake_install.cmake")
+  include("C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/cmake_install.cmake")
 
 endif()
 

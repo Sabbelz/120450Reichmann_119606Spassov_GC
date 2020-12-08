@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/snoke/CLionProjects/CG_Assingments/application/source/application_solar.cpp" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/solar_system.dir/application/source/application_solar.cpp.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/application/source/application_solar.cpp" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/solar_system.dir/application/source/application_solar.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -28,9 +28,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/CMakeFiles/framework.dir/DependInfo.cmake"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/CMakeFiles/glbinding.dir/DependInfo.cmake"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/CMakeFiles/framework.dir/DependInfo.cmake"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glbinding-2.1.1/source/glbinding/CMakeFiles/glbinding.dir/DependInfo.cmake"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

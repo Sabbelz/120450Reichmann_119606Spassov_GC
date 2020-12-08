@@ -1,4 +1,4 @@
-prefix=C:/Users/snoke/CLionProjects/CG_Assingments/install
+prefix=C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/install
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib

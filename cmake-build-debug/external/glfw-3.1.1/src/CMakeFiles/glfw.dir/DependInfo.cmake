@@ -4,18 +4,18 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/context.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/context.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/init.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/init.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/input.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/input.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/monitor.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/monitor.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/wgl_context.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/win32_init.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_init.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/win32_monitor.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/win32_time.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_time.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/win32_tls.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_tls.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/win32_window.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_window.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/window.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/window.c.obj"
-  "C:/Users/snoke/CLionProjects/CG_Assingments/external/glfw-3.1.1/src/winmm_joystick.c" "C:/Users/snoke/CLionProjects/CG_Assingments/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/winmm_joystick.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/context.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/context.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/init.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/init.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/input.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/input.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/monitor.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/monitor.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/wgl_context.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/win32_init.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_init.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/win32_monitor.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/win32_time.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_time.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/win32_tls.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_tls.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/win32_window.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/win32_window.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/window.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/window.c.obj"
+  "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/external/glfw-3.1.1/src/winmm_joystick.c" "C:/Users/snoke/OneDrive/Dokumente/GitHub/120450Reichmann_GC/cmake-build-debug/external/glfw-3.1.1/src/CMakeFiles/glfw.dir/winmm_joystick.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

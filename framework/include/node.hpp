@@ -28,7 +28,7 @@ public:
 
     std::string getName() const;
 
-    std::string getPath() const;
+    std::string getPath();
 
     int getDepth() const;
 
