@@ -3,6 +3,7 @@
 
 #include "structs.hpp"
 
+
 #include <glm/gtc/type_precision.hpp>
 
 #include <map>
@@ -50,15 +51,20 @@ class Application {
 
   // resolution when 
   static const glm::uvec2 initial_resolution; 
-  static const float initial_aspect_ratio; 
+  static const float initial_aspect_ratio;
+
+  static bool paused_;
 };
 
 
 #include "utils.hpp"
 #include "window_handler.hpp"
+#include "application_solar.hpp"
 
 template<typename T>
-void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_minor) {  
+void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_minor) {
+
+    paused_ = false;
 
     GLFWwindow* window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
     
@@ -81,7 +87,9 @@ void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_m
       // clear buffer
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // draw geometry
-      application->render();
+      if(!paused_){
+          application->render();
+      }
       // swap draw buffer to front
       glfwSwapBuffers(window);
       // display fps

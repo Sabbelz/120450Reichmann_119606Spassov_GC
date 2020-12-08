@@ -333,6 +333,11 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
         m_view_transform = glm::rotate(m_view_transform, glm::radians(-0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     }
+
+    //pauses the animation
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS){
+        paused_ = !paused_;
+    }
 }
 
 //handle delta mouse movement input
