@@ -5,21 +5,17 @@
 #include "shader_loader.hpp"
 #include "model_loader.hpp"
 
-#include "ctime"
 #include <random>
-#include <glbinding/gl/gl.h>
 // use gl definitions from glbinding 
 using namespace gl;
 
 //dont load gl bindings from glfw
 #define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
 
-#include <glm/gtc/matrix_transform.hpp>
+
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
 
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  : Application{resource_path}
@@ -64,18 +60,10 @@ void ApplicationSolar::render() const {
     int random_counter = 0;
     // this should render like all of the solar bodies
     for (auto const& name: solar_bodies){
-        //random_counter++;
         std::shared_ptr<Node> solar_body_geom = scene_root->getChildren(name);
         glm::mat4x4 parents_local_transform_matrix = solar_body_geom->getParent()->getLocalTransform();
         std::shared_ptr<GeometryNode> solar_body_pointer_cast = std::static_pointer_cast<GeometryNode>(solar_body_geom);
         glm::mat4x4 rotation_matrix = solar_body_pointer_cast->getRotationMatrix();
-        /*if (name == "moon_geom"){
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0005f, glm::fvec3{0.0f, 1.0f, 0.0f});
-        } else {
-            rotation_matrix = glm::rotate(glm::mat4x4{}, 0.00005f + (float)(11-random_counter) * 0.00001f, glm::fvec3{0.0f, 1.0f, 0.0f});
-        }*/
-
-        //auto test = rotation_matrix * parents_local_transform_matrix;
 
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
         solar_body_geom->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
@@ -84,9 +72,6 @@ void ApplicationSolar::render() const {
 
         // bind shader to upload uniforms
         glUseProgram(m_shaders.at("planet").handle);
-
-        // previous example model_matrix
-        //glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 1.0f, 0.0f});
 
         //model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
         glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
