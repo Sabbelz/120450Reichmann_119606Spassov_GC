@@ -64,17 +64,17 @@ void ApplicationSolar::render() const {
     int random_counter = 0;
     // this should render like all of the solar bodies
     for (auto const& name: solar_bodies){
-        random_counter++;
+        //random_counter++;
         std::shared_ptr<Node> solar_body = scene_root->getChildren(name);
         glm::mat4x4 parents_local_transform_matrix = solar_body->getParent()->getLocalTransform();
-        glm::mat4x4 rotation_matrix = {};
-        if (name == "moon_geom"){
+        glm::mat4x4 rotation_matrix = std::dynamic_pointer_cast<GeometryNode>(solar_body)->getRotationMatrix();
+        /*if (name == "moon_geom"){
             rotation_matrix = glm::rotate(glm::mat4x4{}, 0.0005f, glm::fvec3{0.0f, 1.0f, 0.0f});
         } else {
             rotation_matrix = glm::rotate(glm::mat4x4{}, 0.00005f + (float)(11-random_counter) * 0.00001f, glm::fvec3{0.0f, 1.0f, 0.0f});
-        }
+        }*/
 
-        auto test = rotation_matrix * parents_local_transform_matrix;
+        //auto test = rotation_matrix * parents_local_transform_matrix;
 
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
         solar_body->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
@@ -327,6 +327,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> mercury_geom = std::make_shared<GeometryNode>("mercury_geom", hermes,
                                                                                 glm::scale({}, glm::fvec3{ 0.03f,0.03f,0.03f }),
                                                                                 sphere_model);
+    mercury_geom->setSpeed(0.00001f);
     scene_root->addChildren(hermes);
     hermes->addChildren(mercury_geom);
 
@@ -336,6 +337,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> venus_geom = std::make_shared<GeometryNode>("venus_geom", aphrodite,
                                                                                 glm::scale({}, glm::fvec3{ 0.04f,0.04f,0.04f }),
                                                                                 sphere_model);
+    venus_geom->setSpeed(0.00009f);
     scene_root->addChildren(hermes);
     hermes->addChildren(venus_geom);
 
@@ -345,6 +347,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> earth_geom = std::make_shared<GeometryNode>("earth_geom", terra,
                                                                               glm::scale({}, glm::fvec3{ 0.05f, 0.05f, 0.05f }),
                                                                               sphere_model);
+    earth_geom->setSpeed(0.00008f);
     scene_root->addChildren(terra);
     terra->addChildren(earth_geom);
 
@@ -354,6 +357,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> moon_geom = std::make_shared<GeometryNode>("moon_geom", artemis,
                                                                               glm::scale({}, glm::fvec3{0.0125f, 0.0125f, 0.0125f }),
                                                                               sphere_model);
+    moon_geom->setSpeed(0.0005f);
     terra->addChildren(artemis);
     artemis->addChildren(moon_geom);
 
@@ -363,6 +367,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> mars_geom = std::make_shared<GeometryNode>("mars_geom", ares,
                                                                              glm::scale({}, glm::fvec3{0.04f,0.04f,0.04f }),
                                                                              sphere_model);
+    mars_geom->setSpeed(0.00007f);
     scene_root->addChildren(ares);
     ares->addChildren(mars_geom);
 
@@ -372,6 +377,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> jupiter_geom = std::make_shared<GeometryNode>("jupiter_geom", zeus,
                                                                              glm::scale({}, glm::fvec3{0.2f,0.2f,0.2f }),
                                                                              sphere_model);
+    jupiter_geom->setSpeed(0.00006f);
     scene_root->addChildren(zeus);
     zeus->addChildren(jupiter_geom);
 
@@ -381,6 +387,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> saturn_geom = std::make_shared<GeometryNode>("saturn_geom", cronos,
                                                                                 glm::scale({}, glm::fvec3{0.15f,0.15f,0.15f }),
                                                                                 sphere_model);
+    saturn_geom->setSpeed(0.00005f);
     scene_root->addChildren(cronos);
     cronos->addChildren(saturn_geom);
 
@@ -390,6 +397,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> uranus_geom = std::make_shared<GeometryNode>("uranus_geom", uranos,
                                                                                glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f }),
                                                                                sphere_model);
+    uranus_geom->setSpeed(0.00004f);
     scene_root->addChildren(uranos);
     uranos->addChildren(uranus_geom);
 
@@ -399,6 +407,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> neptune_geom = std::make_shared<GeometryNode>("neptune_geom", poseidon,
                                                                                glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f}),
                                                                                sphere_model);
+    neptune_geom->setSpeed(0.00003f);
     scene_root->addChildren(poseidon);
     poseidon->addChildren(neptune_geom);
 
@@ -408,6 +417,7 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> pluto_geom = std::make_shared<GeometryNode>("pluto_geom", hades,
                                                                                 glm::scale({}, glm::fvec3{0.012f,0.012f,0.012f}),
                                                                                 sphere_model);
+    pluto_geom->setSpeed(0.00002f);
     scene_root->addChildren(hades);
     hades->addChildren(pluto_geom);
 

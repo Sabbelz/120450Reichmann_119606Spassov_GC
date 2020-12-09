@@ -1,15 +1,24 @@
 #include "geometry_node.hpp"
 
 GeometryNode::GeometryNode(std::string const& name, model const& geometry):
-        Node(name), geometry_(geometry)
+        Node(name), geometry_(geometry),
+        size_(0),
+        distance_(0),
+        speed_(0.0f)
 {}
 
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, model const& geometry):
-        Node(name, parent), geometry_(geometry)
+        Node(name, parent), geometry_(geometry),
+        size_(0),
+        distance_(0),
+        speed_(0.0f)
 {}
 
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry):
-        Node(name, parent, localTransform), geometry_(geometry)
+        Node(name, parent, localTransform), geometry_(geometry),
+        size_(0),
+        distance_(0),
+        speed_(0.0f)
 {}
 
 /**
@@ -19,7 +28,7 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
         Node(name, parent, localTransform), geometry_(geometry),
         size_(size),
         distance_(distance),
-        speed_(speed)//TODO change float to vec?!
+        speed_(speed)
 {}
 /**
  * Method which returns the geometry
