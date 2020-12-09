@@ -4,31 +4,33 @@ GeometryNode::GeometryNode(std::string const& name, model const& geometry):
         Node(name), geometry_(geometry),
         size_(0),
         distance_(0),
-        speed_(0.0f)
+        rotation_angle_(0.0f)
 {}
 
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, model const& geometry):
         Node(name, parent), geometry_(geometry),
         size_(0),
         distance_(0),
-        speed_(0.0f)
+        rotation_angle_(0.0f)
 {}
 
-GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry):
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
+                           model const& geometry):
         Node(name, parent, localTransform), geometry_(geometry),
         size_(0),
         distance_(0),
-        speed_(0.0f)
+        rotation_angle_(0.0f)
 {}
 
 /**
  * Constructor which uses size, distance and speed as values to create a geometry_node with specific features.
  */
-GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry, unsigned int size, unsigned int distance, float speed):
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
+                           model const& geometry, unsigned int size, unsigned int distance, float speed):
         Node(name, parent, localTransform), geometry_(geometry),
         size_(size),
         distance_(distance),
-        speed_(speed)
+        rotation_angle_(speed)
 {}
 /**
  * Method which returns the geometry
@@ -81,16 +83,16 @@ void GeometryNode::setDistance(unsigned int distance) {
  * Method which returns the speed
  * @return the requested speed value
  */
-float GeometryNode::getSpeed() {
-    return speed_;
+float GeometryNode::getRotationAngle() {
+    return rotation_angle_;
 }
 
 /**
  * Sets the speed of the geometry_node
  * @param speed the given value
  */
-void GeometryNode::setSpeed(float speed) {
-    speed_ = speed;
+void GeometryNode::setRotationAngle(float speed) {
+    rotation_angle_ = speed;
 }
 
 /**
@@ -98,6 +100,6 @@ void GeometryNode::setSpeed(float speed) {
  * @return the rotation matrix
  */
 glm::mat4x4 GeometryNode::getRotationMatrix() const{
-    glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, speed_, glm::fvec3{0.0f, 1.0f, 0.0f});
+    glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, rotation_angle_, glm::fvec3{0.0f, 1.0f, 0.0f});
     return rotation_matrix;
 }

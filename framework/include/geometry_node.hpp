@@ -30,9 +30,9 @@ public:
 
     void setDistance(unsigned int distance);
 
-    float getSpeed();
+    float getRotationAngle();
 
-    void setSpeed(float speed);
+    void setRotationAngle(float speed);
 
     glm::mat4x4 getRotationMatrix() const;
 
@@ -43,7 +43,7 @@ private:
 
     unsigned int distance_;
 
-    float speed_;
+    float rotation_angle_;
 
 };
 #endif //GEOMETRY_NODE_HPP
