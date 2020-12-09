@@ -57,7 +57,6 @@ void ApplicationSolar::render() const {
     solar_bodies[9] = "neptune_geom";
     solar_bodies[10] = "pluto_geom";
 
-    int random_counter = 0;
     // this should render like all of the solar bodies
     for (auto const& name: solar_bodies){
         std::shared_ptr<Node> solar_body_geom = scene_root->getChildren(name);
@@ -67,13 +66,13 @@ void ApplicationSolar::render() const {
 
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
         solar_body_geom->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
+
         // fetch model matrix from the world transform of the solar body
         glm::mat4x4 model_matrix = solar_body_geom->getWorldTransform();
 
         // bind shader to upload uniforms
         glUseProgram(m_shaders.at("planet").handle);
 
-        //model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
         glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
                            1, GL_FALSE, glm::value_ptr(model_matrix));
 
@@ -93,6 +92,7 @@ void ApplicationSolar::render() const {
     ///// STAR SECTION /////
 
     glUseProgram(m_shaders.at("star").handle);
+
     // bind the VAO to draw
     glBindVertexArray(star_object_.vertex_AO);
     glDrawArrays(star_object_.draw_mode, GLint(0), star_object_.num_elements);
@@ -100,6 +100,7 @@ void ApplicationSolar::render() const {
 }
 
 void ApplicationSolar::uploadView() {
+
     // vertices are transformed in camera space, so camera transform must be inverted
     glm::fmat4 view_matrix = glm::inverse(m_view_transform);
 
