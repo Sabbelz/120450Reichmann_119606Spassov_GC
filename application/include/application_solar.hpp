@@ -33,7 +33,7 @@ protected:
     void initializeSceneGraph();
     // subfunctions for initializeSceneGraph
     void initializeStars(unsigned int const star_amount);
-    void initializeOrbits(unsigned int const orbit_points);
+    void initializeOrbits(unsigned int const orbit_points_amount);
 
     // update uniform values
     void uploadUniforms();
@@ -54,6 +54,7 @@ protected:
     // camera projection matrix
     glm::fmat4 m_view_projection_;
 
+    // GeometryNode names of all solar bodies
     std::array<std::string, 11> solar_bodies_geom_names_;
 
 };

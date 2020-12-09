@@ -57,21 +57,21 @@ ApplicationSolar::~ApplicationSolar() {
 void ApplicationSolar::render() const {
 
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
-    std::array<std::string, 11> solar_bodies;
-    solar_bodies[0] = "sun_geom";
-    solar_bodies[1] = "mercury_geom";
-    solar_bodies[2] = "venus_geom";
-    solar_bodies[3] = "earth_geom";
-    solar_bodies[4] = "moon_geom";
-    solar_bodies[5] = "mars_geom";
-    solar_bodies[6] = "jupiter_geom";
-    solar_bodies[7] = "saturn_geom";
-    solar_bodies[8] = "uranus_geom";
-    solar_bodies[9] = "neptune_geom";
-    solar_bodies[10] = "pluto_geom";
+    //std::array<std::string, 11> solar_bodies;
+    //solar_bodies[0] = "sun_geom";
+    //solar_bodies[1] = "mercury_geom";
+    //solar_bodies[2] = "venus_geom";
+    //solar_bodies[3] = "earth_geom";
+    //solar_bodies[4] = "moon_geom";
+    //solar_bodies[5] = "mars_geom";
+    //solar_bodies[6] = "jupiter_geom";
+    //solar_bodies[7] = "saturn_geom";
+    //solar_bodies[8] = "uranus_geom";
+    //solar_bodies[9] = "neptune_geom";
+    //solar_bodies[10] = "pluto_geom";
 
     // this should render like all of the solar bodies
-    for (auto const& name: solar_bodies){
+    for (auto const& name: solar_bodies_geom_names_){
         std::shared_ptr<Node> solar_body_geom = scene_root->getChildren(name);
         glm::mat4x4 parents_local_transform_matrix = solar_body_geom->getParent()->getLocalTransform();
         std::shared_ptr<GeometryNode> solar_body_pointer_cast = std::static_pointer_cast<GeometryNode>(solar_body_geom);
@@ -235,8 +235,10 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
     std::uniform_real_distribution<float> position_distribution(0.0f, 20.0f);
     std::uniform_real_distribution<float> colour_distribution(0.0f, 1.0f);
 
+    // random generation of position and colour of every star
     for (unsigned int i = 0; i < star_amount; ++i) {
 
+        // random sign assigment
         int first_sign = sign_distribution(generator);
         int second_sign = sign_distribution(generator);
         int third_sign = sign_distribution(generator);
@@ -275,8 +277,6 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
         stars_pos_col_data.push_back(colour_b);
     }
 
-    unsigned long the_size = stars_pos_col_data.size();
-
     glGenVertexArrays(1, &star_object_.vertex_AO);
     glBindVertexArray(star_object_.vertex_AO);
 
@@ -299,14 +299,33 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
 
 }
 
-void ApplicationSolar::initializeOrbits(unsigned int const orbit_points){
+void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
+    // TODO: This may not be finished till tag date but will maybe finished later
 
+    // getting scene root
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     std::vector<GLfloat> orbits_positions;
-    orbits_positions.reserve(orbit_points * 3 * sizeof(float));
+    orbits_positions.reserve(orbit_points_amount * 3 * sizeof(float) * solar_bodies_geom_names_.size());
 
-    for(std::string name : solar_bodies_geom_names_){
+    float rotation_angle = 180.0f / orbit_points_amount;
 
+    for(std::string const& name : solar_bodies_geom_names_){
+
+        std::shared_ptr<Node> solar_body_for_downcast = scene_root->getChildren(name);
+        // needed downcast for using the GeometryNode
+        std::shared_ptr<GeometryNode> solar_body_geom = std::static_pointer_cast<GeometryNode>(solar_body_for_downcast);
+        std::shared_ptr<Node> solar_body_hold = solar_body_geom->getParent();
+
+        glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, rotation_angle, glm::fvec3{ 0.0f,1.0f,0.0f });
+
+        glm::fvec4 position_point = solar_body_hold->getLocalTransform() * glm::fvec4{ 0.0f,0.0f,0.0f,1.0f};
+
+        for (unsigned int i = 0; i < orbit_points_amount; ++i) {
+            orbits_positions.push_back(position_point.x);
+            orbits_positions.push_back(position_point.y);
+            orbits_positions.push_back(position_point.z);
+            position_point = rotation_matrix * position_point;
+        }
     }
 }
 
