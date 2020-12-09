@@ -1,0 +1,3 @@
+C:\Users\snoke\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\203.5981.166\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\solar_system.dir/objects.a
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe cr CMakeFiles\solar_system.dir/objects.a @CMakeFiles\solar_system.dir\objects1.rsp
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE -g   -Wl,--whole-archive CMakeFiles\solar_system.dir/objects.a -Wl,--no-whole-archive  -o Debug\solar_system.exe -Wl,--out-implib,Debug\libsolar_system.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\solar_system.dir\linklibs.rsp
