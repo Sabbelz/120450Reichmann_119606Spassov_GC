@@ -1,5 +1,10 @@
 #include "geometry_node.hpp"
 
+/**
+ * Default Constructor
+ * @param name the given name
+ * @param geometry the given geometry
+ */
 GeometryNode::GeometryNode(std::string const& name, model const& geometry):
         Node(name), geometry_(geometry),
         size_(0),
@@ -7,6 +12,12 @@ GeometryNode::GeometryNode(std::string const& name, model const& geometry):
         rotation_angle_(0.0f)
 {}
 
+/**
+ * Constructor
+ * @param name the given name
+ * @param parent the given parent
+ * @param geometry the given geometry
+ */
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, model const& geometry):
         Node(name, parent), geometry_(geometry),
         size_(0),
@@ -14,6 +25,13 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
         rotation_angle_(0.0f)
 {}
 
+/**
+ * Constructor
+ * @param name the given name
+ * @param parent the given parent
+ * @param localTransform the given local transform
+ * @param geometry the given geometry
+ */
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
                            model const& geometry):
         Node(name, parent, localTransform), geometry_(geometry),
@@ -24,6 +42,13 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
 
 /**
  * Constructor which uses size, distance and speed as values to create a geometry_node with specific features.
+ * @param name the given name
+ * @param parent the given parent
+ * @param localTransform the given local Transform
+ * @param geometry the geometry
+ * @param size the size of the object
+ * @param distance the distance of the object to the root
+ * @param speed the speed at which the objects rotates around the centre
  */
 GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
                            model const& geometry, unsigned int size, unsigned int distance, float speed):
@@ -32,6 +57,7 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
         distance_(distance),
         rotation_angle_(speed)
 {}
+
 /**
  * Method which returns the geometry
  */
