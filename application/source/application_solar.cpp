@@ -22,14 +22,27 @@ using namespace gl;
 #include <iostream>
 
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
- : Application{resource_path}
- , planet_object_{}
- , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
- , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)}
+   : Application{resource_path}
+   , planet_object_{}
+   , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
+   , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
-  initializeSceneGraph();
-  initializeGeometry();
-  initializeShaderPrograms();
+    initializeSceneGraph();
+    initializeGeometry();
+    initializeShaderPrograms();
+
+    solar_bodies_geom_names_[0] = "sun_geom";
+    solar_bodies_geom_names_[1] = "mercury_geom";
+    solar_bodies_geom_names_[2] = "venus_geom";
+    solar_bodies_geom_names_[3] = "earth_geom";
+    solar_bodies_geom_names_[4] = "moon_geom";
+    solar_bodies_geom_names_[5] = "mars_geom";
+    solar_bodies_geom_names_[6] = "jupiter_geom";
+    solar_bodies_geom_names_[7] = "saturn_geom";
+    solar_bodies_geom_names_[8] = "uranus_geom";
+    solar_bodies_geom_names_[9] = "neptune_geom";
+    solar_bodies_geom_names_[10] = "pluto_geom";
+
 }
 
 ApplicationSolar::~ApplicationSolar() {
@@ -298,6 +311,17 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
     star_object_.draw_mode = GL_POINTS;
     star_object_.num_elements = GLsizei(star_amount);
 
+}
+
+void ApplicationSolar::initializeOrbits(unsigned int const orbit_points){
+
+    std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
+    std::vector<GLfloat> orbits_positions;
+    orbits_positions.reserve(orbit_points * 3 * sizeof(float));
+
+    for(std::string name : solar_bodies_geom_names_){
+
+    }
 }
 
 void ApplicationSolar::initializeSceneGraph(){
