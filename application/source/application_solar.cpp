@@ -170,12 +170,6 @@ void ApplicationSolar::initializeGeometry() {
 }
 
 void ApplicationSolar::initializeSceneGraph(){
-    /* TODO LIST:
-     * - initialize all planets, the moon and the sun
-     * - think how to position the camera
-     * - decide on some good local transformation parameters for the different bodies
-     * - root -> body -> body_geom (exception moon)
-     * */
 
     // link scene graph singleton to the application
     scene_graph_ = SceneGraph::getSceneGraphInstance();

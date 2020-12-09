@@ -1,1 +1,0 @@
- Debug/libframework.a external/glbinding-2.1.1/libglbindingd.a -lglu32 -pthread Debug/libglfw3.a -lopengl32 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

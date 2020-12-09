@@ -98,7 +98,7 @@ std::string Node::getName() const {
  */
 std::string Node::getPath() {
     if (parent_ == nullptr){
-        return 0;
+        return path_;
     } else {
         path_ = parent_->getPath() + path_;
         return path_;
