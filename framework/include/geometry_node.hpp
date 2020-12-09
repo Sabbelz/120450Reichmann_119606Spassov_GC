@@ -5,6 +5,8 @@
 #include "model.hpp"
 #include "node.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class GeometryNode : public Node {
 public:
 
@@ -32,6 +34,8 @@ public:
 
     void setSpeed(float speed);
 
+    glm::mat4x4 getRotationMatrix() const;
+
 private:
     model geometry_;
 
@@ -40,5 +44,6 @@ private:
     unsigned int distance_;
 
     float speed_;
+
 };
 #endif //GEOMETRY_NODE_HPP

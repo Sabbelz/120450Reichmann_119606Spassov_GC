@@ -84,3 +84,11 @@ void GeometryNode::setSpeed(float speed) {
     speed_ = speed;
 }
 
+/**
+ * Method which returns the rotation matrix
+ * @return the rotation matrix
+ */
+glm::mat4x4 GeometryNode::getRotationMatrix() const{
+    glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, speed_, glm::fvec3{0.0f, 1.0f, 0.0f});
+    return rotation_matrix;
+}
