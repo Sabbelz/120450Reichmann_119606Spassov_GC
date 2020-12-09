@@ -31,6 +31,9 @@ protected:
     void initializeShaderPrograms();
     void initializeGeometry();
     void initializeSceneGraph();
+    // subfunctions for initializeSceneGraph
+    void initializeStars(unsigned int const star_amount);
+
     // update uniform values
     void uploadUniforms();
     // upload projection matrix
@@ -42,8 +45,9 @@ protected:
     SceneGraph* scene_graph_;
 
     // cpu representation of model
-    model_object planet_object;
-  
+    model_object planet_object_;
+    model_object star_object_;
+
     // camera transform matrix
     glm::fmat4 m_view_transform;
     // camera projection matrix
