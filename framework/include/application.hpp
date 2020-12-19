@@ -53,8 +53,7 @@ class Application {
   static const glm::uvec2 initial_resolution; 
   static const float initial_aspect_ratio;
 
-  //bool for the renderer to pause
-  static bool paused_;
+
 };
 
 
@@ -86,9 +85,8 @@ void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_m
       // clear buffer
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // draw geometry
-      if(!paused_){
-          application->render();
-      }
+      application->render();
+
       // swap draw buffer to front
       glfwSwapBuffers(window);
       // display fps

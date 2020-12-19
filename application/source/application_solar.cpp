@@ -16,6 +16,7 @@ using namespace gl;
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+bool ApplicationSolar::paused_ = false;
 
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
    : Application{resource_path}
@@ -78,8 +79,9 @@ void ApplicationSolar::render() const {
         glm::mat4x4 rotation_matrix = solar_body_pointer_cast->getRotationMatrix();
 
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
-        solar_body_geom->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
-
+        if (!paused_) {
+            solar_body_geom->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
+        }
         // fetch model matrix from the world transform of the solar body
         glm::mat4x4 model_matrix = solar_body_geom->getWorldTransform();
 
@@ -92,8 +94,7 @@ void ApplicationSolar::render() const {
         // extra matrix for normal transformation to keep them orthogonal to surface
         glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
         glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
-                           1, GL_FALSE, glm::value_ptr(normal_matrix));
-
+                               1, GL_FALSE, glm::value_ptr(normal_matrix));
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
 
