@@ -48,6 +48,7 @@ protected:
     // cpu representation of model
     model_object planet_object_;
     model_object star_object_;
+    model_object orbit_object_;
 
     // camera transform matrix
     glm::fmat4 m_view_transform;

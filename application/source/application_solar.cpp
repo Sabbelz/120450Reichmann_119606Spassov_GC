@@ -182,6 +182,17 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("star").u_locs["ModelViewMatrix"] = -1;
     m_shaders.at("star").u_locs["ProjectionMatrix"] = -1;
 
+
+    ///// orbits shader initialization /////
+
+    m_shaders.emplace("orbits", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/orb.vert"},
+                                                     {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/orb.frag"}}});
+
+    // request uniform locations for shader program
+    m_shaders.at("orbits").u_locs["ModelMatrix"] = -1;
+    m_shaders.at("orbits").u_locs["ViewMatrix"] = -1;
+    m_shaders.at("orbits").u_locs["ProjectionMatrix"] = -1;
+
 }
 
 // load models
@@ -301,7 +312,6 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
 }
 
 void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
-    // TODO: This may not be finished till tag date but will maybe finished later
 
     // getting scene root
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
@@ -312,8 +322,12 @@ void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
 
     for(std::string const& name : solar_bodies_geom_names_){
 
+        orbits_positions.clear();
+
         std::shared_ptr<Node> solar_body_for_downcast = scene_root->getChildren(name);
+
         // needed downcast for using the GeometryNode
+        //auto solar_body_geom = solar_body_for_downcast->getParent();
         std::shared_ptr<GeometryNode> solar_body_geom = std::static_pointer_cast<GeometryNode>(solar_body_for_downcast);
         std::shared_ptr<Node> solar_body_hold = solar_body_geom->getParent();
 
@@ -321,13 +335,36 @@ void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
 
         glm::fvec4 position_point = solar_body_hold->getLocalTransform() * glm::fvec4{ 0.0f,0.0f,0.0f,1.0f};
 
-        for (unsigned int i = 0; i < orbit_points_amount; ++i) {
+        for (int i = 0; i < orbit_points_amount; ++i) {
             orbits_positions.push_back(position_point.x);
             orbits_positions.push_back(position_point.y);
             orbits_positions.push_back(position_point.z);
             position_point = rotation_matrix * position_point;
         }
+
+        model orbit_model{};
+        orbit_model.data = orbits_positions;
+        orbit_model.vertex_num = orbit_points_amount;
+
+        auto orbit_node = std::make_shared<GeometryNode>( name + "_orbit", orbit_model);
+
+        solar_body_hold->getParent()->addChildren(orbit_node);
+        orbit_node->setParent(solar_body_hold->getParent());
     }
+
+    glGenVertexArrays(1, &orbit_object_.vertex_AO);
+    glBindVertexArray(orbit_object_.vertex_AO);
+
+    glGenBuffers(1, &orbit_object_.vertex_BO);
+    glBindBuffer(GL_ARRAY_BUFFER, orbit_object_.vertex_BO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof (float )* orbit_points_amount, orbits_positions.data(), GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(6 * sizeof(float)), nullptr);
+
+    orbit_object_.draw_mode = GL_LINE_STRIP;
+    orbit_object_.num_elements = GLsizei (orbit_points_amount);
+
 }
 
 void ApplicationSolar::initializeSceneGraph(){
@@ -336,6 +373,8 @@ void ApplicationSolar::initializeSceneGraph(){
     scene_graph_ = SceneGraph::getSceneGraphInstance();
 
     initializeStars(5000);
+
+    //initializeOrbits(5000);
 
     // resource_path_ is assigned in the read_resource_path() function in utils.cpp as "/../../resources/"
     std::string sphere_object_path = m_resource_path_ + "models/sphere.obj";
