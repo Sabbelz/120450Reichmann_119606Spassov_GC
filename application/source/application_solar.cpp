@@ -79,6 +79,9 @@ void ApplicationSolar::render() const {
         std::shared_ptr<GeometryNode> solar_body_pointer_cast = std::static_pointer_cast<GeometryNode>(solar_body_geom);
         glm::mat4x4 rotation_matrix = solar_body_pointer_cast->getRotationMatrix();
 
+        // main node of current solar body
+        std::shared_ptr<Node> solar_body = solar_body_geom->getParent();
+
         // modify transformation matrix of solar body with rotation matrix, responsible for movement around parent node
         if (!paused_) {
             solar_body_geom->getParent()->setLocalTransform(rotation_matrix * parents_local_transform_matrix);
@@ -98,6 +101,49 @@ void ApplicationSolar::render() const {
                                1, GL_FALSE, glm::value_ptr(normal_matrix));
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
+
+        // declaring solar body base colour
+        GLint planet_colour_location = glGetUniformLocation(m_shaders.at("planet").handle, "planet_colour");
+        LightColor solar_body_colour = solar_body->getBaseColour();
+        glUniform3f(planet_colour_location, solar_body_colour.r/255.0f, solar_body_colour.g/255.0f, solar_body_colour.b/255.0f);
+
+        if("sun_geom" != name){
+
+            // get main sun node from scene graph
+            std::shared_ptr<Node> sun_uncasted = scene_root->getChildren("solaris");
+            std::shared_ptr<PointLightNode> solaris = std::static_pointer_cast<PointLightNode>(sun_uncasted);
+
+            ///// update sun light effects /////
+
+            // getting sunlight colour
+            LightColor sunlight_colour = solaris->getLightColor();
+            // declaring uniform variable for sunlight colour
+            GLint sunlight_colour_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_colour");
+            glUniform3f(sunlight_colour_location, sunlight_colour.r/255.0f, sunlight_colour.g/255.0f, sunlight_colour.b/255.0f);
+
+            // getting the sunlight position from the world transformation matrix of the sun
+            glm::fvec4 sunlight_position = solaris->getWorldTransform() * glm::fvec4(0.0f, 0.0f, 0.0f, 1.0f);
+            // declaring uniform variable for sunlight position
+            GLint sunlight_position_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_position");
+            glUniform3f(sunlight_position_location, sunlight_position.x, sunlight_position.y, sunlight_position.z);
+
+            // getting sunlight intensity
+            double sunlight_intensity = solaris->getLightIntensity();
+            // declaring uniform variable for sunlight intensity
+            GLint sunlight_intensity_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_intensity");
+            glUniform1f(sunlight_intensity_location, sunlight_intensity);
+
+            // setting and declaring ambient light strength on all non star solar bodies
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at("planet").handle, "ambient_intensity");
+            glUniform1f(ambient_strength_location, 0.05f);
+
+        } else {
+
+            // setting and declaring ambient light strength for the sun
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at("planet").handle, "ambient_intensity");
+            glUniform1f(ambient_strength_location, 1.0f);
+
+        }
 
         // draw bound vertex array using bound shader
         glDrawElements(planet_object_.draw_mode, planet_object_.num_elements, model::INDEX.type, NULL);
@@ -393,6 +439,8 @@ void ApplicationSolar::initializeSceneGraph(){
     // set base and light colour
     solaris->setBaseColour({255, 165, 0});
     solaris->setLightColor(solaris->getBaseColour());
+    // set light intensity
+    solaris->setLightIntensity(1.0);
 
     ////////// Mercury //////////
     std::shared_ptr<Node> hermes = std::make_shared<Node>("hermes", scene_root,
