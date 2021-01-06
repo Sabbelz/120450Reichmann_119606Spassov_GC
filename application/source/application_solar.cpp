@@ -439,7 +439,7 @@ void ApplicationSolar::initializeSceneGraph(){
     solaris->addChildren(sun_geom);
     // set base and light colour
     solaris->setBaseColour({255, 165, 0});
-    solaris->setLightColor(solaris->getBaseColour());
+    solaris->setLightColor({255, 255, 255});
     // set light intensity
     solaris->setLightIntensity(1.0);
 
