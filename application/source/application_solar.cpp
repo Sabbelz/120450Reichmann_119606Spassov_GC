@@ -24,9 +24,6 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
    , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
    , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
-    initializeSceneGraph();
-    initializeGeometry();
-    initializeShaderPrograms();
 
     solar_bodies_geom_names_[0] = "sun_geom";
     solar_bodies_geom_names_[1] = "mercury_geom";
@@ -39,6 +36,10 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     solar_bodies_geom_names_[8] = "uranus_geom";
     solar_bodies_geom_names_[9] = "neptune_geom";
     solar_bodies_geom_names_[10] = "pluto_geom";
+
+    initializeSceneGraph();
+    initializeGeometry();
+    initializeShaderPrograms();
 
 }
 
