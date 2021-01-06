@@ -11,8 +11,8 @@ void main() {
   vec3 normal = normalize(pass_Normal);
   vec3 spec_color = vec3(1.0,1.0,1.0);
 
-  vec3 light_dir = normalize(sunlight_position - pass_Camera_Position);
-  vec3 view_dir = normalize(-pass_Camera_Position);
+  vec3 light_dir = normalize(sunlight_position - pass_Position);
+  vec3 view_dir = normalize(pass_Camera_Position - pass_Position);
   vec3 half_dir = normalize(light_dir + view_dir);
 
   float shininess = 20.0f;
