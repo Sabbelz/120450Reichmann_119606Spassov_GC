@@ -32,10 +32,13 @@ Node::Node(std::string const& name, std::shared_ptr<Node> const& parent):
 Node::Node(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4 const& localTransform):
         parent_(parent),
         name_(name),
-        path_(std::string(parent->getPath()) + "/" + name),
+        //path_(std::string(parent->getPath()) + "/" + name),
         depth_(parent->getDepth() + 1),
         local_transform_(localTransform)
-{ }
+{
+    std::string ikkeWillNichtMehr = parent->path_;
+    path_ = ikkeWillNichtMehr + "/" + name_;
+}
 
 /**
  * Method which returns a pointer for the parent node
