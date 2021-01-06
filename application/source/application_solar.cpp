@@ -374,8 +374,6 @@ void ApplicationSolar::initializeSceneGraph(){
 
     initializeStars(5000);
 
-    //initializeOrbits(5000);
-
     // resource_path_ is assigned in the read_resource_path() function in utils.cpp as "/../../resources/"
     std::string sphere_object_path = m_resource_path_ + "models/sphere.obj";
     // load sphere.obj, this model is the base for all solar bodies which are spherical
@@ -486,6 +484,8 @@ void ApplicationSolar::initializeSceneGraph(){
                                                                       m_view_projection_, scene_root);
     scene_root->addChildren(dionysus);
 
+    initializeOrbits(5000);
+
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
@@ -550,6 +550,7 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
   // upload new projection matrix
   uploadProjection();
 }
+
 
 
 // exe entry point

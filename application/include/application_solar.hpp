@@ -35,6 +35,7 @@ protected:
     void initializeStars(unsigned int const star_amount);
     void initializeOrbits(unsigned int const orbit_points_amount);
 
+
     // update uniform values
     void uploadUniforms();
     // upload projection matrix
