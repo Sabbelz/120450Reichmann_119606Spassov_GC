@@ -2,7 +2,7 @@
 
 /**
  * Default constructor (depth is default == 0)
- * @param name the given name
+ * @param name: the given name
  */
 Node::Node(std::string const& name):
     parent_(nullptr),
@@ -13,26 +13,26 @@ Node::Node(std::string const& name):
 
 /**
  * Constructor with provided parent node
- * @param name the given name
- * @param parent the given parent node
+ * @param name: the given name
+ * @param parent: the given parent node
  */
-Node::Node(std::string const& name, std::shared_ptr<Node> parent):
+Node::Node(std::string const& name, std::shared_ptr<Node> const& parent):
     parent_(parent),
     name_(name),
-    path_("/" + name + parent->getPath()),
+    path_(std::string(parent->getPath()) + "/" + name),
     depth_(parent->getDepth() + 1)
 { }
 
 /**
  * Constructor with provided parent node and local transform
- * @param name the given name
- * @param parent the given parent node
- * @param localTransform the local transform which has to be set
+ * @param name: the given name
+ * @param parent: the given parent node
+ * @param localTransform: the local transform which has to be set
  */
-Node::Node(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform):
+Node::Node(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4 const& localTransform):
         parent_(parent),
         name_(name),
-        path_("/" + name + parent->getPath()),
+        path_(std::string(parent->getPath()) + "/" + name),
         depth_(parent->getDepth() + 1),
         local_transform_(localTransform)
 { }
@@ -47,19 +47,19 @@ std::shared_ptr<Node> Node::getParent() const {
 
 /**
  * Method which sets a given Node as the new parent
- * @param parent the new parent Node
+ * @param parent: the new parent Node
  */
-void Node::setParent(std::shared_ptr<Node> parent) {
+void Node::setParent(std::shared_ptr<Node> const& parent) {
     parent_ = parent;
     depth_ = parent_->getDepth() + 1;
-    path_ = parent_->getPath() + "/" + name_;
+    path_ = std::string(parent_->getPath()) + "/" + name_;
 }
 
 /**
  * Method which returns the first found child found in its children tree with matching name.
  * It will do so recursively.
- * @param child_name the child which has to be found
- * @return a pointer to the wanted children or nullptr in case of no success
+ * @param child_name: the child which has to be found
+ * @return a pointer: to the wanted children or nullptr in case of no success
  */
 std::shared_ptr<Node> Node::getChildren(std::string const& child_name) const {
     for (auto const& child: children_){
@@ -162,7 +162,6 @@ void Node::setWorldTransform(glm::mat4x4 const& mat) {
  * @param children the new child
  */
 void Node::addChildren(std::shared_ptr<Node> child) {
-    child->setParent(std::make_shared<Node>(*this));
     children_.push_back(child);
 }
 

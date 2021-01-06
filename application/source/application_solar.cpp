@@ -137,6 +137,7 @@ void ApplicationSolar::render() const {
             GLint ambient_strength_location = glGetUniformLocation(m_shaders.at("planet").handle, "ambient_intensity");
             glUniform1f(ambient_strength_location, 0.05f);
 
+            // extra case for sun
         } else {
 
             // setting and declaring ambient light strength for the sun
@@ -393,7 +394,7 @@ void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
         orbit_model.data = orbits_positions;
         orbit_model.vertex_num = orbit_points_amount;
 
-        auto orbit_node = std::make_shared<GeometryNode>( name + "_orbit", orbit_model);
+        auto orbit_node = std::make_shared<GeometryNode>( name + "_orbit", solar_body_hold->getParent(), orbit_model);
 
         solar_body_hold->getParent()->addChildren(orbit_node);
         orbit_node->setParent(solar_body_hold->getParent());
@@ -560,7 +561,7 @@ void ApplicationSolar::initializeSceneGraph(){
     scene_root->addChildren(hades);
     hades->addChildren(pluto_geom);
     // set base colour
-    pluto_geom->setBaseColour({165, 42, 42});
+    hades->setBaseColour({165, 42, 42});
 
     ////////// Dionysus(Camera) ////////// (god of theater, so he kinda fits the camera job)
     std::shared_ptr<CameraNode> dionysus = std::make_shared<CameraNode>("dionysus", true, true,

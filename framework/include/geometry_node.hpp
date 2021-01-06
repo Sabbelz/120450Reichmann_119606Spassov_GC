@@ -12,25 +12,27 @@ public:
 
     GeometryNode(std::string const& name, model const& geometry);
 
-    GeometryNode(std::string const& name, std::shared_ptr<Node> parent, model const& geometry);
+    GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, model const& geometry);
 
-    GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry);
+    GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4x4 const& localTransform,
+                 model const& geometry);
 
-    GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform, model const& geometry, unsigned int size, unsigned int distance, float speed);
+    GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4x4 const& localTransform,
+                 model const& geometry, unsigned int size, unsigned int distance, float speed);
 
     model getGeometry() const;
 
     void setGeometry(model new_geometry);
 
-    unsigned int getSize();
+    unsigned int getSize() const;
 
     void setSize(unsigned int size);
 
-    unsigned int getDistance();
+    unsigned int getDistance() const;
 
     void setDistance(unsigned int distance);
 
-    float getRotationAngle();
+    float getRotationAngle() const;
 
     void setRotationAngle(float speed);
 

@@ -11,25 +11,26 @@ class PointLightNode: public Node{
 public:
     explicit PointLightNode(std::string const& name);
 
-    PointLightNode(std::string const& name, std::shared_ptr<Node> parent); //TODO still here, because otherwise the solaris node wouldn't be created. Maybe the human race loves to live with some light at the horizon.
+    PointLightNode(std::string const& name, std::shared_ptr<Node> const& parent); //TODO still here, because otherwise the solaris node wouldn't be created. Maybe the human race loves to live with some light at the horizon.
 
-    PointLightNode(std::string const& name, double lightIntensity, LightColor lightColor);
+    PointLightNode(std::string const& name, float light_intensity, LightColor light_color);
 
-    PointLightNode(std::string const& name, std::shared_ptr<Node> parent, double lightIntensity, LightColor lightColor);
+    PointLightNode(std::string const& name, std::shared_ptr<Node> const& parent, float light_intensity,
+                   LightColor light_color);
 
-    PointLightNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform, double lightIntensity, LightColor lightColor);
+    PointLightNode(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4 const& local_transform,
+                   float light_intensity, LightColor light_color);
 
-    void setLightIntensity(double lightIntensity);
+    void setLightIntensity(float lightIntensity);
 
-    double getLightIntensity();
+    float getLightIntensity() const;
 
-    void setLightColor(LightColor light_color);
+    void setLightColor(LightColor const& light_color);
 
     LightColor getLightColor();
 
 private:
-    double lightIntensity_;
-
+    float light_intensity_;
     LightColor light_color_;
 };
 

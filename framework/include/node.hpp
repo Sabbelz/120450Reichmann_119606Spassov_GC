@@ -13,15 +13,15 @@ class Node {
 public:
     explicit Node(std::string const& name);
 
-    Node(std::string const& name, std::shared_ptr<Node> parent);
+    Node(std::string const& name, std::shared_ptr<Node> const& parent);
 
-    Node(std::string const& name, std::shared_ptr<Node> parent, glm::mat4 const& localTransform);
+    Node(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4 const& localTransform);
 
     ~Node() {};
 
     std::shared_ptr<Node> getParent() const;
 
-    void setParent(std::shared_ptr<Node> parent);
+    void setParent(std::shared_ptr<Node> const& parent);
 
     std::shared_ptr<Node> getChildren(std::string const& child_name) const;
 

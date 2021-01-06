@@ -2,8 +2,8 @@
 
 /**
  * Default Constructor
- * @param name the given name
- * @param geometry the given geometry
+ * @param name: the given name
+ * @param geometry: the given geometry
  */
 GeometryNode::GeometryNode(std::string const& name, model const& geometry):
         Node(name), geometry_(geometry),
@@ -14,11 +14,11 @@ GeometryNode::GeometryNode(std::string const& name, model const& geometry):
 
 /**
  * Constructor
- * @param name the given name
- * @param parent the given parent
- * @param geometry the given geometry
+ * @param name: the given name
+ * @param parent: the given parent
+ * @param geometry: the given geometry
  */
-GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, model const& geometry):
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, model const& geometry):
         Node(name, parent), geometry_(geometry),
         size_(0),
         distance_(0),
@@ -27,12 +27,12 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
 
 /**
  * Constructor
- * @param name the given name
- * @param parent the given parent
- * @param localTransform the given local transform
- * @param geometry the given geometry
+ * @param name: the given name
+ * @param parent: the given parent
+ * @param localTransform: the given local transform
+ * @param geometry: the given geometry
  */
-GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4x4 const& localTransform,
                            model const& geometry):
         Node(name, parent, localTransform), geometry_(geometry),
         size_(0),
@@ -42,15 +42,15 @@ GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent
 
 /**
  * Constructor which uses size, distance and speed as values to create a geometry_node with specific features.
- * @param name the given name
- * @param parent the given parent
- * @param localTransform the given local Transform
- * @param geometry the geometry
- * @param size the size of the object
- * @param distance the distance of the object to the root
- * @param speed the speed at which the objects rotates around the centre
+ * @param name: the given name
+ * @param parent: the given parent
+ * @param localTransform: the given local Transform
+ * @param geometry: the geometry
+ * @param size the: size of the object
+ * @param distance: the distance of the object to the root
+ * @param speed: the speed at which the objects rotates around the centre
  */
-GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> parent, glm::mat4x4 const& localTransform,
+GeometryNode::GeometryNode(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4x4 const& localTransform,
                            model const& geometry, unsigned int size, unsigned int distance, float speed):
         Node(name, parent, localTransform), geometry_(geometry),
         size_(size),
@@ -77,7 +77,7 @@ void GeometryNode::setGeometry(model new_geometry) {
  * Method which returns the size of the geometry_node
  * @return the requested size
  */
-unsigned int GeometryNode::getSize() {
+unsigned int GeometryNode::getSize() const {
     return size_;
 }
 
@@ -93,7 +93,7 @@ void GeometryNode::setSize(unsigned int size) {
  * Method which gets the Distance of the geometry_node
  * @return the asked distance
  */
-unsigned int GeometryNode::getDistance() {
+unsigned int GeometryNode::getDistance() const {
     return distance_;
 }
 
@@ -109,7 +109,7 @@ void GeometryNode::setDistance(unsigned int distance) {
  * Method which returns the speed
  * @return the requested speed value
  */
-float GeometryNode::getRotationAngle() {
+float GeometryNode::getRotationAngle() const {
     return rotation_angle_;
 }
 
