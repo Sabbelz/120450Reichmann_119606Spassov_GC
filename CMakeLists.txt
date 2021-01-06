@@ -67,7 +67,7 @@ if(NOT APPLE)
   option(BUILD_EXAMPLES     OFF)
 
   if(BUILD_EXAMPLES) 
-    add_executable(1_fixed application/source/application_fixed.cpp)
+    add_executable(1_fixed application/source/application_fixed.cpp framework/include/light_color.hpp)
     target_link_libraries(1_fixed framework)
 
     add_executable(2_vbo application/source/application_vbo.cpp)
