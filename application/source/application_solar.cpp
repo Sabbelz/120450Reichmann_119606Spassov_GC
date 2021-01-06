@@ -389,6 +389,7 @@ void ApplicationSolar::initializeSceneGraph(){
                                                                             sphere_model);
     scene_root->addChildren(solaris);
     solaris->addChildren(sun_geom);
+    solaris->setLightColor({0, 0, 0});
 
     ////////// Mercury //////////
     std::shared_ptr<Node> hermes = std::make_shared<Node>("hermes", scene_root,

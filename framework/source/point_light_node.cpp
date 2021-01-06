@@ -8,15 +8,15 @@ PointLightNode::PointLightNode(const std::string &name, std::shared_ptr<Node> pa
         Node(name)
 {}
 
-PointLightNode::PointLightNode(const std::string &name, double lightIntensity, lightColor lightColor):
+PointLightNode::PointLightNode(const std::string &name, double lightIntensity, LightColor lightColor):
     Node(name)
 {}
 
-PointLightNode::PointLightNode(const std::string &name, std::shared_ptr<Node> parent, double lightIntensity, lightColor lightColor):
+PointLightNode::PointLightNode(const std::string &name, std::shared_ptr<Node> parent, double lightIntensity, LightColor lightColor):
     Node(name, parent)
 {}
 
-PointLightNode::PointLightNode(const std::string &name, std::shared_ptr<Node> parent, const glm::mat4 &localTransform, double lightIntensity, lightColor lightColor):
+PointLightNode::PointLightNode(const std::string &name, std::shared_ptr<Node> parent, const glm::mat4 &localTransform, double lightIntensity, LightColor lightColor):
     Node(name, parent, localTransform)
 {}
 
@@ -37,17 +37,17 @@ double PointLightNode::getLightIntensity() {
 }
 
 /**
- * sets the lightColor of the lightNode
- * @param lightColor the given color
+ * sets the LightColor of the lightNode
+ * @param light_color the given color
  */
-void PointLightNode::setLightColor(lightColor lightColor) {
-    lightColor_ = lightColor;
+void PointLightNode::setLightColor(LightColor light_color) {
+    light_color_ = light_color;
 }
 
 /**
- * gets the lightColor
+ * gets the LightColor
  * @return the asked color
  */
-lightColor PointLightNode::getLightColor() {
-    return lightColor_;
+LightColor PointLightNode::getLightColor() {
+    return light_color_;
 }

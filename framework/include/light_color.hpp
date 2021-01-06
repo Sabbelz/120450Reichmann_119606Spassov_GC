@@ -1,7 +1,7 @@
 #ifndef LIGHT_COLOR_HPP
 #define LIGHT_COLOR_HPP
 
-struct lightColor{
+struct LightColor{
     unsigned int r, g, b;
 };
 
