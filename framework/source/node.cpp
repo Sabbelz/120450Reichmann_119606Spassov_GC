@@ -19,9 +19,11 @@ Node::Node(std::string const& name):
 Node::Node(std::string const& name, std::shared_ptr<Node> const& parent):
     parent_(parent),
     name_(name),
-    path_(std::string(parent->getPath()) + "/" + name),
     depth_(parent->getDepth() + 1)
-{ }
+{
+    std::string copy_helper = parent->path_;
+    path_ = copy_helper + "/" + name_;
+}
 
 /**
  * Constructor with provided parent node and local transform
@@ -32,12 +34,11 @@ Node::Node(std::string const& name, std::shared_ptr<Node> const& parent):
 Node::Node(std::string const& name, std::shared_ptr<Node> const& parent, glm::mat4 const& localTransform):
         parent_(parent),
         name_(name),
-        //path_(std::string(parent->getPath()) + "/" + name),
         depth_(parent->getDepth() + 1),
         local_transform_(localTransform)
 {
-    std::string ikkeWillNichtMehr = parent->path_;
-    path_ = ikkeWillNichtMehr + "/" + name_;
+    std::string copy_helper = parent->path_;
+    path_ = copy_helper + "/" + name_;
 }
 
 /**

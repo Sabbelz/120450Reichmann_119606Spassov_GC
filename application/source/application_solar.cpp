@@ -462,10 +462,10 @@ void ApplicationSolar::initializeSceneGraph(){
                                                                                 glm::scale({}, glm::fvec3{ 0.04f,0.04f,0.04f }),
                                                                                 sphere_model, 0.04f, 1.2f, 0.00009f);
     // set parent and add geometry Node
-    scene_root->addChildren(hermes);
-    hermes->addChildren(venus_geom);
+    scene_root->addChildren(aphrodite);
+    aphrodite->addChildren(venus_geom);
     // set base colour
-    hermes->setBaseColour({238, 216, 174});
+    aphrodite->setBaseColour({238, 216, 174});
 
     ////////// Earth //////////
     std::shared_ptr<Node> terra = std::make_shared<Node>("terra", scene_root,
