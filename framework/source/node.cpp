@@ -162,6 +162,7 @@ void Node::setWorldTransform(glm::mat4x4 const& mat) {
  * @param children the new child
  */
 void Node::addChildren(std::shared_ptr<Node> child) {
+    child->setParent(std::make_shared<Node>(*this));
     children_.push_back(child);
 }
 
