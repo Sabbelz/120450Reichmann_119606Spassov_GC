@@ -7,6 +7,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <memory>
+#include "light_color.hpp"
 
 class Node {
 public:
@@ -44,6 +45,14 @@ public:
 
     void removeChildren(std::string const& children);
 
+    void setBaseColour(LightColor const& new_base_color){
+        base_colour_ = new_base_color;
+    }
+
+    LightColor getBaseColour(){
+        return base_colour_;
+    }
+
 protected:
     std::shared_ptr<Node> parent_;
     std::list<std::shared_ptr<Node>> children_;
@@ -52,7 +61,7 @@ protected:
     int depth_ = 0;
     glm::mat4x4 local_transform_;
     glm::mat4x4 world_transform_;
-
+    LightColor base_colour_ = LightColor{0, 0, 0};
 
 };
 

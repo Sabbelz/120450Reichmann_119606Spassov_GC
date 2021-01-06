@@ -387,9 +387,12 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> sun_geom = std::make_shared<GeometryNode>("sun_geom", solaris,
                                                                             glm::scale({}, glm::fvec3{0.5f, 0.5f, 0.5f}),
                                                                             sphere_model);
+    // set parent and add geometry Node
     scene_root->addChildren(solaris);
     solaris->addChildren(sun_geom);
-    solaris->setLightColor({0, 0, 0});
+    // set base and light colour
+    solaris->setBaseColour({255, 165, 0});
+    solaris->setLightColor(solaris->getBaseColour());
 
     ////////// Mercury //////////
     std::shared_ptr<Node> hermes = std::make_shared<Node>("hermes", scene_root,
@@ -397,8 +400,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> mercury_geom = std::make_shared<GeometryNode>("mercury_geom", hermes,
                                                                                 glm::scale({}, glm::fvec3{ 0.03f,0.03f,0.03f }),
                                                                                 sphere_model, 0.03f, 1.0f, 0.00007);
+    // set parent and add geometry Node
     scene_root->addChildren(hermes);
     hermes->addChildren(mercury_geom);
+    // set base colour
+    hermes->setBaseColour({238, 173, 14});
 
     ////////// Venus //////////
     std::shared_ptr<Node> aphrodite = std::make_shared<Node>("aphrodite", scene_root,
@@ -406,8 +412,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> venus_geom = std::make_shared<GeometryNode>("venus_geom", aphrodite,
                                                                                 glm::scale({}, glm::fvec3{ 0.04f,0.04f,0.04f }),
                                                                                 sphere_model, 0.04f, 1.2f, 0.00009f);
+    // set parent and add geometry Node
     scene_root->addChildren(hermes);
     hermes->addChildren(venus_geom);
+    // set base colour
+    hermes->setBaseColour({238, 216, 174});
 
     ////////// Earth //////////
     std::shared_ptr<Node> terra = std::make_shared<Node>("terra", scene_root,
@@ -415,8 +424,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> earth_geom = std::make_shared<GeometryNode>("earth_geom", terra,
                                                                               glm::scale({}, glm::fvec3{ 0.05f, 0.05f, 0.05f }),
                                                                               sphere_model, 0.05f, 1.4f, 0.00008f);
+    // set parent and add geometry Node
     scene_root->addChildren(terra);
     terra->addChildren(earth_geom);
+    // set base colour
+    terra->setBaseColour({0, 0, 205});
 
     ////////// Moon //////////
     std::shared_ptr<Node> artemis = std::make_shared<Node>("artemis", terra,
@@ -424,8 +436,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> moon_geom = std::make_shared<GeometryNode>("moon_geom", artemis,
                                                                               glm::scale({}, glm::fvec3{0.0125f, 0.0125f, 0.0125f }),
                                                                               sphere_model, 0.0125f, 0.1f, 0.0005);
+    // set parent and add geometry Node
     terra->addChildren(artemis);
     artemis->addChildren(moon_geom);
+    // set base colour
+    artemis->setBaseColour({131, 139, 139});
 
     ////////// Mars //////////
     std::shared_ptr<Node> ares = std::make_shared<Node>("ares", scene_root,
@@ -433,8 +448,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> mars_geom = std::make_shared<GeometryNode>("mars_geom", ares,
                                                                              glm::scale({}, glm::fvec3{0.04f,0.04f,0.04f }),
                                                                              sphere_model, 0.04f, 2.0f, 0.00007f);
+    // set parent and add geometry Node
     scene_root->addChildren(ares);
     ares->addChildren(mars_geom);
+    // set base colour
+    ares->setBaseColour({205, 102, 0});
 
     ////////// Jupiter //////////
     std::shared_ptr<Node> zeus = std::make_shared<Node>("zeus", scene_root,
@@ -442,8 +460,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> jupiter_geom = std::make_shared<GeometryNode>("jupiter_geom", zeus,
                                                                              glm::scale({}, glm::fvec3{0.2f,0.2f,0.2f }),
                                                                              sphere_model, 0.2f, 2.5f, 0.00006f);
+    // set parent and add geometry Node
     scene_root->addChildren(zeus);
     zeus->addChildren(jupiter_geom);
+    // set base colour
+    zeus->setBaseColour({139, 121, 94});
 
     ////////// Saturn //////////
     std::shared_ptr<Node> cronos = std::make_shared<Node>("cronos", scene_root,
@@ -451,8 +472,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> saturn_geom = std::make_shared<GeometryNode>("saturn_geom", cronos,
                                                                                 glm::scale({}, glm::fvec3{0.15f,0.15f,0.15f }),
                                                                                 sphere_model, 0.15f, 2.7f, 0.00005f);
+    // set parent and add geometry Node
     scene_root->addChildren(cronos);
     cronos->addChildren(saturn_geom);
+    // set base colour
+    cronos->setBaseColour({238, 190, 112});
 
     ////////// Uranus //////////
     std::shared_ptr<Node> uranos = std::make_shared<Node>("uranos", scene_root,
@@ -460,8 +484,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> uranus_geom = std::make_shared<GeometryNode>("uranus_geom", uranos,
                                                                                glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f }),
                                                                                sphere_model, 0.1f, 3.0f, 0.00004f);
+    // set parent and add geometry Node
     scene_root->addChildren(uranos);
     uranos->addChildren(uranus_geom);
+    // set base colour
+    uranos->setBaseColour({175, 238, 238});
 
     ////////// Neptune //////////
     std::shared_ptr<Node> poseidon = std::make_shared<Node>("poseidon", scene_root,
@@ -469,8 +496,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> neptune_geom = std::make_shared<GeometryNode>("neptune_geom", poseidon,
                                                                                glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f}),
                                                                                sphere_model, 0.1f, 3.2f, 0.00003f);
+    // set parent and add geometry Node
     scene_root->addChildren(poseidon);
     poseidon->addChildren(neptune_geom);
+    // set base colour
+    poseidon->setBaseColour({0, 0, 139});
 
     ////////// Pluto //////////
     std::shared_ptr<Node> hades = std::make_shared<Node>("hades", scene_root,
@@ -478,8 +508,11 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<GeometryNode> pluto_geom = std::make_shared<GeometryNode>("pluto_geom", hades,
                                                                                 glm::scale({}, glm::fvec3{0.012f,0.012f,0.012f}),
                                                                                 sphere_model, 0.012f, 3.5f, 0.00002f);
+    // set parent and add geometry Node
     scene_root->addChildren(hades);
     hades->addChildren(pluto_geom);
+    // set base colour
+    pluto_geom->setBaseColour({165, 42, 42});
 
     ////////// Dionysus(Camera) ////////// (god of theater, so he kinda fits the camera job)
     std::shared_ptr<CameraNode> dionysus = std::make_shared<CameraNode>("dionysus", true, true,
