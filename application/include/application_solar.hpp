@@ -59,6 +59,9 @@ protected:
     // GeometryNode names of all solar bodies
     std::array<std::string, 11> solar_bodies_geom_names_;
 
+    // name of currently used shader
+    std::string shader_name_;
+
     //bool for the renderer to pause
     static bool paused_;
 

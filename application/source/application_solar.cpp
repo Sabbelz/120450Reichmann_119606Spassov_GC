@@ -22,7 +22,8 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
    : Application{resource_path}
    , planet_object_{}
    , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
-   , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)}
+   , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
+   shader_name_("planet")
 {
 
     solar_bodies_geom_names_[0] = "sun_geom";
@@ -90,20 +91,20 @@ void ApplicationSolar::render() const {
         glm::mat4x4 model_matrix = solar_body_geom->getWorldTransform();
 
         // bind shader to upload uniforms
-        glUseProgram(m_shaders.at("planet").handle);
+        glUseProgram(m_shaders.at(shader_name_).handle);
 
-        glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
+        glUniformMatrix4fv(m_shaders.at(shader_name_).u_locs.at("ModelMatrix"),
                            1, GL_FALSE, glm::value_ptr(model_matrix));
 
         // extra matrix for normal transformation to keep them orthogonal to surface
         glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
-        glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
+        glUniformMatrix4fv(m_shaders.at(shader_name_).u_locs.at("NormalMatrix"),
                                1, GL_FALSE, glm::value_ptr(normal_matrix));
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
 
         // declaring solar body base colour
-        GLint planet_colour_location = glGetUniformLocation(m_shaders.at("planet").handle, "planet_colour");
+        GLint planet_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "planet_colour");
         LightColor solar_body_colour = solar_body->getBaseColour();
         glUniform3f(planet_colour_location, solar_body_colour.r/255.0f, solar_body_colour.g/255.0f, solar_body_colour.b/255.0f);
 
@@ -118,30 +119,30 @@ void ApplicationSolar::render() const {
             // getting sunlight colour
             LightColor sunlight_colour = solaris->getLightColor();
             // declaring uniform variable for sunlight colour
-            GLint sunlight_colour_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_colour");
+            GLint sunlight_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_colour");
             glUniform3f(sunlight_colour_location, sunlight_colour.r/255.0f, sunlight_colour.g/255.0f, sunlight_colour.b/255.0f);
 
             // getting the sunlight position from the world transformation matrix of the sun
             glm::fvec4 sunlight_position = solaris->getWorldTransform() * glm::fvec4(0.0f, 0.0f, 0.0f, 1.0f);
             // declaring uniform variable for sunlight position
-            GLint sunlight_position_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_position");
+            GLint sunlight_position_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_position");
             glUniform3f(sunlight_position_location, sunlight_position.x, sunlight_position.y, sunlight_position.z);
 
             // getting sunlight intensity
             double sunlight_intensity = solaris->getLightIntensity();
             // declaring uniform variable for sunlight intensity
-            GLint sunlight_intensity_location = glGetUniformLocation(m_shaders.at("planet").handle, "sunlight_intensity");
+            GLint sunlight_intensity_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_intensity");
             glUniform1f(sunlight_intensity_location, sunlight_intensity);
 
             // setting and declaring ambient light strength on all non star solar bodies
-            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at("planet").handle, "ambient_intensity");
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "ambient_intensity");
             glUniform1f(ambient_strength_location, 0.05f);
 
             // extra case for sun
         } else {
 
             // setting and declaring ambient light strength for the sun
-            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at("planet").handle, "ambient_intensity");
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "ambient_intensity");
             glUniform1f(ambient_strength_location, 1.0f);
 
         }
@@ -168,9 +169,16 @@ void ApplicationSolar::uploadView() {
 
     ///// solar bodies /////
 
+    // standard shader
     glUseProgram(m_shaders.at("planet").handle);
     // upload matrix to gpu
     glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ViewMatrix"),
+                       1, GL_FALSE, glm::value_ptr(view_matrix));
+
+    // cel shading shader
+    glUseProgram(m_shaders.at("cel_shading").handle);
+
+    glUniformMatrix4fv(m_shaders.at("cel_shading").u_locs.at("ViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
 
     ///// stars /////
@@ -184,9 +192,16 @@ void ApplicationSolar::uploadProjection() {
 
     ///// solar bodies /////
 
+    // standard
     glUseProgram(m_shaders.at("planet").handle);
     // upload matrix to gpu
     glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ProjectionMatrix"),
+                       1, GL_FALSE, glm::value_ptr(m_view_projection_));
+
+    // cel shading shader
+    glUseProgram(m_shaders.at("cel_shading").handle);
+
+    glUniformMatrix4fv(m_shaders.at("cel_shading").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection_));
 
     ///// stars /////
@@ -214,11 +229,22 @@ void ApplicationSolar::initializeShaderPrograms() {
     // store shader program objects in container
     m_shaders.emplace("planet", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/simple.vert"},
                                            {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/simple.frag"}}});
+
     // request uniform locations for shader program
     m_shaders.at("planet").u_locs["NormalMatrix"] = -1;
     m_shaders.at("planet").u_locs["ModelMatrix"] = -1;
     m_shaders.at("planet").u_locs["ViewMatrix"] = -1;
     m_shaders.at("planet").u_locs["ProjectionMatrix"] = -1;
+
+    // loading and storing of cel shading shader
+    m_shaders.emplace("cel_shading", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/cel_shading.vert"},
+                                                     {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/cel_shading.frag"}}});
+
+    // request uniform locations for shader program
+    m_shaders.at("cel_shading").u_locs["NormalMatrix"] = -1;
+    m_shaders.at("cel_shading").u_locs["ModelMatrix"] = -1;
+    m_shaders.at("cel_shading").u_locs["ViewMatrix"] = -1;
+    m_shaders.at("cel_shading").u_locs["ProjectionMatrix"] = -1;
 
     ///// stars shader initialization /////
 
@@ -616,6 +642,16 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
     //pauses the animation
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS){
         paused_ = !paused_;
+    }
+
+    // for shader switching
+    if (key == GLFW_KEY_1 && (action == GLFW_PRESS)){
+        shader_name_ = "planet";
+        uploadView();
+    }
+    else if (key == GLFW_KEY_2 && (action == GLFW_PRESS)){
+        shader_name_ = "cel_shading";
+        uploadView();
     }
 }
 

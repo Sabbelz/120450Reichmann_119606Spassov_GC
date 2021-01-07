@@ -34,15 +34,15 @@ void main() {
         out_Color = outline_colour;
     } else {
         if (diffuse_intensity > 0.8)
-        diffuse = 1.0 * light_color;
+        diffuse = 1.0 * sunlight_colour;
         else if (diffuse_intensity > 0.6)
-        diffuse = 0.7 * light_color;
+        diffuse = 0.7 * sunlight_colour;
         else if (diffuse_intensity > 0.4)
-        diffuse = 0.5 * light_color;
+        diffuse = 0.5 * sunlight_colour;
         else if (diffuse_intensity > 0.2)
-        diffuse = 0.3 * light_color;
+        diffuse = 0.3 * sunlight_colour;
         else
-        diffuse = 0.15 * light_color;
+        diffuse = 0.15 * sunlight_colour;
 
         out_Color = vec4((ambient + diffuse) * planet_colour + specular * sunlight_colour, 1.0);
         //out_Color = vec4(abs(normalize(pass_Normal)), 1.0);
