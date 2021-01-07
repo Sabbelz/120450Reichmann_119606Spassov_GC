@@ -1,6 +1,6 @@
 #version 150
 
-in  vec3 pass_Normal, pass_Camera_Position, pass_Position;
+in  vec3 pass_Normal, pass_Camera_Position, pass_Position, pass_Camera_Position_outline;
 out vec4 out_Color;
 
 uniform vec3 sunlight_colour, sunlight_position, planet_colour;
@@ -16,6 +16,8 @@ void main() {
     vec3 view_dir = normalize(pass_Camera_Position - pass_Position); //position of the viewer
     vec3 half_dir = normalize(light_dir + view_dir); //half vector between the light and the viewer
 
+    vec3 view_dir_outline = normalize(pass_Camera_Position_outline - pass_Position); //position of the viewer
+
     float shininess = 20.0f;
 
     float spec_angle = max(dot(half_dir, normal), 0.0);
@@ -30,7 +32,7 @@ void main() {
     vec4 outline_colour = vec4(0.0,1.0,1.0,1.0);
     float outline_thickness = 0.25;
 
-    if (abs(dot(normal, view_dir)) < outline_thickness){
+    if (abs(dot(normal, view_dir_outline)) < outline_thickness){
         out_Color = outline_colour;
     } else {
         if (diffuse_intensity > 0.8)
