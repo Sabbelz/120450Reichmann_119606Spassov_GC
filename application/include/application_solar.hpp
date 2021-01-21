@@ -33,7 +33,8 @@ protected:
     void initializeSceneGraph();
     // subfunctions for initializeSceneGraph
     void initializeStars(unsigned int const star_amount);
-    void initializeOrbits(unsigned int const orbit_points_amount);
+    void initializeOrbits();
+    void initializeSkybox();
 
 
     // update uniform values
@@ -50,11 +51,16 @@ protected:
     model_object planet_object_;
     model_object star_object_;
     model_object orbit_object_;
+    model_object skybox_object_;
 
     // camera transform matrix
     glm::fmat4 m_view_transform;
     // camera projection matrix
     glm::fmat4 m_view_projection_;
+
+    //skybox
+    GLenum active_skymap_texture;
+    texture_object skymap_texture;
 
     // GeometryNode names of all solar bodies
     std::array<std::string, 11> solar_bodies_geom_names_;

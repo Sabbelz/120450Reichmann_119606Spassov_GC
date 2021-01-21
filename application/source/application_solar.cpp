@@ -41,6 +41,8 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     initializeSceneGraph();
     initializeGeometry();
     initializeShaderPrograms();
+    initializeSkybox();
+    initializeOrbits();
 
 }
 
@@ -60,18 +62,6 @@ ApplicationSolar::~ApplicationSolar() {
 void ApplicationSolar::render() const {
 
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
-    //std::array<std::string, 11> solar_bodies;
-    //solar_bodies[0] = "sun_geom";
-    //solar_bodies[1] = "mercury_geom";
-    //solar_bodies[2] = "venus_geom";
-    //solar_bodies[3] = "earth_geom";
-    //solar_bodies[4] = "moon_geom";
-    //solar_bodies[5] = "mars_geom";
-    //solar_bodies[6] = "jupiter_geom";
-    //solar_bodies[7] = "saturn_geom";
-    //solar_bodies[8] = "uranus_geom";
-    //solar_bodies[9] = "neptune_geom";
-    //solar_bodies[10] = "pluto_geom";
 
     // this should render like all of the solar bodies
     for (auto const& name: solar_bodies_geom_names_){
@@ -385,8 +375,9 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
 
 }
 
-void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
+void ApplicationSolar::initializeOrbits(){
 
+    unsigned int orbit_points_amount = 1000;
     // getting scene root
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     std::vector<GLfloat> orbits_positions;
@@ -439,6 +430,77 @@ void ApplicationSolar::initializeOrbits(unsigned int const orbit_points_amount){
     orbit_object_.draw_mode = GL_LINE_STRIP;
     orbit_object_.num_elements = GLsizei (orbit_points_amount);
 
+}
+
+void ApplicationSolar::initializeSkybox() {
+    model skybox_model{};
+
+    std::vector<GLfloat> skybox = {
+
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            -1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f
+    };
+    skybox_model.data = skybox;
+    skybox_model.vertex_num = skybox.size();
+
+    auto skybox_node = std::make_shared<GeometryNode>("skybox", skybox_model);
+
+    scene_graph_->getRoot()->addChildren(skybox_node);
+    skybox_node->setParent(scene_graph_->getRoot());
+
+    glGenVertexArrays(1, &skybox_object_.vertex_AO);
+    glBindVertexArray(skybox_object_.vertex_AO);
+
+    glGenBuffers(1, &skybox_object_.vertex_BO);
+    glBindBuffer(GL_ARRAY_BUFFER, skybox_object_.vertex_BO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*skybox.size(), skybox.data(), GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(3 * sizeof(float)), 0);
+
+
+    skybox_object_.draw_mode = GL_TRIANGLES;
+    skybox_object_.num_elements = GLsizei(skybox.size());
 }
 
 void ApplicationSolar::initializeSceneGraph(){
@@ -594,7 +656,7 @@ void ApplicationSolar::initializeSceneGraph(){
                                                                       m_view_projection_, scene_root);
     scene_root->addChildren(dionysus);
 
-    initializeOrbits(5000);
+    initializeOrbits();
 
 }
 
