@@ -35,6 +35,7 @@ protected:
     void initializeStars(unsigned int const star_amount);
     void initializeOrbits();
     void initializeSkybox();
+    void initializeTextures();
 
 
     // update uniform values
