@@ -41,8 +41,9 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     initializeSceneGraph();
     initializeGeometry();
     initializeShaderPrograms();
-    //initializeSkybox();
     initializeOrbits();
+    //initializeSkybox();
+
 
 }
 
@@ -58,6 +59,8 @@ ApplicationSolar::~ApplicationSolar() {
     glDeleteBuffers(1, &star_object_.element_BO);
     glDeleteVertexArrays(1, &star_object_.vertex_AO);
 }
+
+////////////////////////////// RENDERING //////////////////////////////
 
 void ApplicationSolar::render() const {
 
@@ -152,6 +155,27 @@ void ApplicationSolar::render() const {
 
     ///// ORBIT SECTION /////
 
+    glUseProgram(m_shaders.at("orbits").handle);
+
+    for (auto& planet_name : solar_bodies_geom_names_) {
+
+        auto orbit = scene_graph_->getRoot()->getChildren(planet_name+"_geom_orbit");
+        auto orbit_geom = std::static_pointer_cast<GeometryNode> (orbit);
+        auto orbit_world_transform = orbit->getWorldTransform();
+        model orbit_model = orbit_geom->getGeometry();
+        std::vector<GLfloat> orbit_data = (*orbit_geom).getGeometry().data;
+
+        glUniformMatrix4fv(m_shaders.at("orbits").u_locs.at("ModelMatrix"),
+                           1, GL_FALSE, glm::value_ptr(orbit_world_transform));
+
+        glBindBuffer(GL_ARRAY_BUFFER, orbit_object_.vertex_BO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float)*orbit_data.size(), orbit_data.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(orbit_object_.vertex_AO);
+
+        glDrawArrays(orbit_object_.draw_mode, GLint(0), orbit_object_.num_elements);
+    }
+
 
     ///// SKYBOX SECTION /////
 
@@ -182,6 +206,11 @@ void ApplicationSolar::uploadView() {
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ModelViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
 
+    ///// orbits /////
+    glUseProgram(m_shaders.at("orbits").handle);
+
+    glUniformMatrix4fv(m_shaders.at("orbits").u_locs.at("ViewMatrix"),
+                       1, GL_FALSE, glm::value_ptr(view_matrix));
     /*///// skybox /////
     glUseProgram(m_shaders.at("skybox").handle);
 
@@ -212,6 +241,12 @@ void ApplicationSolar::uploadProjection() {
                        1, GL_FALSE, glm::value_ptr(m_view_projection_));
 
 
+    /////orbits/////
+
+    glUseProgram(m_shaders.at("orbits").handle);
+
+    glUniformMatrix4fv(m_shaders.at("orbits").u_locs.at("ProjectionMatrix"),
+                       1, GL_FALSE, glm::value_ptr(m_view_projection_));
     /*///// skybox /////
     glUseProgram(m_shaders.at("skybox").handle);
 
@@ -222,7 +257,7 @@ void ApplicationSolar::uploadProjection() {
 
 // update uniform locations
 void ApplicationSolar::uploadUniforms() { 
-  // bind shader to which to upload unforms
+  // bind shader to which to upload uniforms
   //glUseProgram(m_shaders.at("planet").handle);
   // upload uniform values to new locations
   uploadView();
@@ -402,7 +437,7 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
 
 void ApplicationSolar::initializeOrbits(){
 
-    unsigned int orbit_points_amount = 1000;
+    unsigned int orbit_points_amount = 100;
     // getting scene root
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     std::vector<GLfloat> orbits_positions;
@@ -683,6 +718,10 @@ void ApplicationSolar::initializeSceneGraph(){
 
     initializeOrbits();
 }
+////////////////////////////// TEXTURES //////////////////////////////
+void ApplicationSolar::initializeTextures() {
+
+}
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
 // handling key input, press key once for single step, keep key pressed for lasting movement
@@ -756,7 +795,6 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
   // upload new projection matrix
   uploadProjection();
 }
-
 
 
 // exe entry point
