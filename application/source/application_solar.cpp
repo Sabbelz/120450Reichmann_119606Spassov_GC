@@ -41,7 +41,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     initializeSceneGraph();
     initializeGeometry();
     initializeShaderPrograms();
-    initializeSkybox();
+    //initializeSkybox();
     initializeOrbits();
 
 }
@@ -150,6 +150,11 @@ void ApplicationSolar::render() const {
     glBindVertexArray(star_object_.vertex_AO);
     glDrawArrays(star_object_.draw_mode, GLint(0), star_object_.num_elements);
 
+    ///// ORBIT SECTION /////
+
+
+    ///// SKYBOX SECTION /////
+
 }
 
 void ApplicationSolar::uploadView() {
@@ -176,6 +181,12 @@ void ApplicationSolar::uploadView() {
     glUseProgram(m_shaders.at("star").handle);
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ModelViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
+
+    /*///// skybox /////
+    glUseProgram(m_shaders.at("skybox").handle);
+
+    glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ViewMatrix"),
+                       1, GL_FALSE, glm::value_ptr(view_matrix));*/
 }
 
 void ApplicationSolar::uploadProjection() {
@@ -199,6 +210,14 @@ void ApplicationSolar::uploadProjection() {
     glUseProgram(m_shaders.at("star").handle);
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection_));
+
+
+    /*///// skybox /////
+    glUseProgram(m_shaders.at("skybox").handle);
+
+    glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ProjectionMatrix"),
+                       1, GL_FALSE, glm::value_ptr(m_view_projection_));*/
+
 }
 
 // update uniform locations
@@ -257,6 +276,12 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("orbits").u_locs["ViewMatrix"] = -1;
     m_shaders.at("orbits").u_locs["ProjectionMatrix"] = -1;
 
+    ///// skybox shader initialization /////
+    /*m_shaders.emplace("skybox", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/skybox.vert"},
+                                                       {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/skybox.frag"}}});
+
+    m_shaders.at("skybox").u_locs["ProjectionMatrix"] = -1;
+    m_shaders.at("skybox").u_locs["ViewMatrix"] = -1;*/
 }
 
 // load models
@@ -657,7 +682,6 @@ void ApplicationSolar::initializeSceneGraph(){
     scene_root->addChildren(dionysus);
 
     initializeOrbits();
-
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////

@@ -2,7 +2,7 @@
 
 in vec3 TextDir;
 
-out vec4 fragColour;
+out vec4 FragColour;
 
 uniform samplerCube skybox;
 
