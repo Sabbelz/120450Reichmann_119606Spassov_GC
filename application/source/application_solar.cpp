@@ -159,7 +159,7 @@ void ApplicationSolar::render() const {
 
     for (auto& planet_name : solar_bodies_geom_names_) {
 
-        auto orbit = scene_graph_->getRoot()->getChildren(planet_name+"_geom_orbit");
+        auto orbit = scene_graph_->getRoot()->getChildren(planet_name+"_orbit");
         auto orbit_geom = std::static_pointer_cast<GeometryNode> (orbit);
         auto orbit_world_transform = orbit->getWorldTransform();
         model orbit_model = orbit_geom->getGeometry();
@@ -443,7 +443,7 @@ void ApplicationSolar::initializeOrbits(){
     std::vector<GLfloat> orbits_positions;
     orbits_positions.reserve(orbit_points_amount * 3 * sizeof(float) * solar_bodies_geom_names_.size());
 
-    float rotation_angle = 180.0f / orbit_points_amount;
+    float rotation_angle = 0.1f;
 
     for(std::string const& name : solar_bodies_geom_names_){
 
