@@ -15,12 +15,15 @@ using namespace gl;
 
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <pixel_data.hpp>
+#include <texture_loader.hpp>
 
 bool ApplicationSolar::paused_ = false;
 
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
    : Application{resource_path}
    , planet_object_{}
+   , planet_textures{}
    , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
    , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
    shader_name_("planet")
@@ -42,6 +45,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     initializeGeometry();
     initializeShaderPrograms();
     initializeOrbits();
+    initializeTextures();
     //initializeSkybox();
 
 
@@ -65,6 +69,7 @@ ApplicationSolar::~ApplicationSolar() {
 void ApplicationSolar::render() const {
 
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
+    int index = 0;
 
     // this should render like all of the solar bodies
     for (auto const& name: solar_bodies_geom_names_){
@@ -93,8 +98,18 @@ void ApplicationSolar::render() const {
         glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
         glUniformMatrix4fv(m_shaders.at(shader_name_).u_locs.at("NormalMatrix"),
                                1, GL_FALSE, glm::value_ptr(normal_matrix));
+
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
+
+
+        // textures
+        texture_object texture = planet_textures.at(name + "_tex");
+
+        glActiveTexture(GL_TEXTURE1+ 2 * index);
+        glBindTexture(texture.target, texture.handle);
+
+        glActiveTexture(GL_TEXTURE1 + 2 * index + 1);
 
         // declaring solar body base colour
         GLint planet_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "planet_colour");
@@ -142,7 +157,7 @@ void ApplicationSolar::render() const {
 
         // draw bound vertex array using bound shader
         glDrawElements(planet_object_.draw_mode, planet_object_.num_elements, model::INDEX.type, NULL);
-
+        index++;
     }
 
     ///// STAR SECTION /////
@@ -720,6 +735,41 @@ void ApplicationSolar::initializeSceneGraph(){
 }
 ////////////////////////////// TEXTURES //////////////////////////////
 void ApplicationSolar::initializeTextures() {
+
+    int index = 0;
+
+    for(std::string planet : solar_bodies_geom_names_) {
+        pixel_data pixel_planet;
+        pixel_planet = texture_loader::file(m_resource_path_ + "textures/" + planet + "_texture.png");
+
+
+        GLsizei width = (GLsizei) pixel_planet.width;
+        GLsizei height = (GLsizei) pixel_planet.height;
+        GLenum channel_number = pixel_planet.channels;
+        GLenum channel_type = pixel_planet.channel_type;
+
+
+        //glActiveTexture(GL_TEXTURE+planetIndex);
+        glActiveTexture(GL_TEXTURE1+2 * index);
+        texture_object texture;
+        glGenTextures(1, &texture.handle);
+        texture.target = GL_TEXTURE_2D;
+        std::string texture_name = planet+"_tex";
+        planet_textures.insert({texture_name, texture});
+
+        glBindTexture(texture.target, texture.handle);
+
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type, pixel_planet.ptr());
+
+        index++;
+    }
 
 }
 

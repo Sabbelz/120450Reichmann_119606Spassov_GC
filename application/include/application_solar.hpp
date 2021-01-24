@@ -69,6 +69,9 @@ protected:
     // name of currently used shader
     std::string shader_name_;
 
+    // textures
+    std::map<std::string, texture_object> planet_textures{};
+
     //bool for the renderer to pause
     static bool paused_;
 
