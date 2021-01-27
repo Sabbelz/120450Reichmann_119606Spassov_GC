@@ -111,7 +111,7 @@ void ApplicationSolar::render() const {
 
         texture_object map = planet_maps.at(name + "_map_tex");
 
-        glActiveTexture(GL_TEXTURE1 + index + 1);
+        glActiveTexture(GL_TEXTURE1 + index + 12);
         glBindTexture(map.target, map.handle);
         GLint normal_sampler_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "NormalSampler");
         glUniform1i(normal_sampler_location, map.handle);
