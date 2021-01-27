@@ -36,6 +36,7 @@ protected:
     void initializeOrbits();
     void initializeSkybox();
     void initializeTextures();
+    void initializeMap();
 
 
     // update uniform values
@@ -71,6 +72,7 @@ protected:
 
     // textures
     std::map<std::string, texture_object> planet_textures{};
+    std::map<std::string, texture_object> planet_maps{};
 
     //bool for the renderer to pause
     static bool paused_;

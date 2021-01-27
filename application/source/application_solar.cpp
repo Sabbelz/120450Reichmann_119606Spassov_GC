@@ -43,6 +43,7 @@ ApplicationSolar::ApplicationSolar(std::string const &resource_path)
     initializeShaderPrograms();
     initializeOrbits();
     initializeTextures();
+    initializeMap();
     initializeSkybox();
 
 
@@ -99,18 +100,18 @@ void ApplicationSolar::render() const {
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
 
-
         // textures
         texture_object texture = planet_textures.at(name + "_tex");
-        texture_object map = planet_textures.at(name + "_map_tex");
 
-        glActiveTexture(GL_TEXTURE1 + 2 * index);
+        glActiveTexture(GL_TEXTURE1 + index);
         glBindTexture(texture.target, texture.handle);
         // add sampler
         GLint sampler_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "TextureSampler");
         glUniform1i(sampler_location, texture.handle);
 
-        glActiveTexture(GL_TEXTURE1 + 2 * index + 1);
+        texture_object map = planet_maps.at(name + "_map_tex");
+
+        glActiveTexture(GL_TEXTURE1 + index + 1);
         glBindTexture(map.target, map.handle);
         GLint normal_sampler_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "NormalSampler");
         glUniform1i(normal_sampler_location, map.handle);
@@ -819,37 +820,6 @@ void ApplicationSolar::initializeTextures() {
 
     }
 
-    for (std::string planet : solar_bodies_geom_names_) {
-        pixel_data pixel_planet;
-        pixel_planet = texture_loader::file(m_resource_path_ + "maps/" + planet + "_map.png");
-
-        GLsizei width = (GLsizei) pixel_planet.width;
-        GLsizei height = (GLsizei) pixel_planet.height;
-        GLenum channel_number = pixel_planet.channels;
-        GLenum channel_type = pixel_planet.channel_type;
-
-        glActiveTexture(GL_TEXTURE1 + 2 * index);
-        texture_object texture;
-        glGenTextures(1, &texture.handle);
-        texture.target = GL_TEXTURE_2D;
-        std::string texture_name = planet + "_map_tex";
-        planet_textures.insert({texture_name, texture});
-
-        glBindTexture(texture.target, texture.handle);
-
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type,
-                     pixel_planet.ptr());
-
-        index++;
-    }
-
     texture_object Skybox;
     pixel_data skybox_data;
     int skybox_index = 0;
@@ -885,6 +855,40 @@ void ApplicationSolar::initializeTextures() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+}
+
+void ApplicationSolar::initializeMap() {
+    int index = 0;
+    for (std::string planet : solar_bodies_geom_names_) {
+        pixel_data pixel_map;
+        pixel_map = texture_loader::file(m_resource_path_ + "maps/" + planet + "_map.png");
+
+        GLsizei width = (GLsizei) pixel_map.width;
+        GLsizei height = (GLsizei) pixel_map.height;
+        GLenum channel_number = pixel_map.channels;
+        GLenum channel_type = pixel_map.channel_type;
+
+        glActiveTexture(GL_TEXTURE1 + 2 * index);
+        texture_object texture;
+        glGenTextures(1, &texture.handle);
+        texture.target = GL_TEXTURE_2D;
+        std::string texture_name = planet + "_map_tex";
+        planet_maps.insert({texture_name, texture});
+
+        glBindTexture(texture.target, texture.handle);
+
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type,
+                     pixel_map.ptr());
+
+        index++;
+    }
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
