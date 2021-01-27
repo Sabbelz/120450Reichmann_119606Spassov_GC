@@ -1,6 +1,6 @@
 #version 150
-
-in vec3 pos;
+#extension GL_ARB_explicit_attrib_location: require
+layout (location=0) in vec3 pos;
 
 out vec3 TextDir;
 
