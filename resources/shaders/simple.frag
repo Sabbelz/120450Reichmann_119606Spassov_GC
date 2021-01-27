@@ -29,7 +29,7 @@ void main() {
     vec3 normal = normalize(pass_Normal);
     vec3 spec_color = vec3(1.0,1.0,1.0);
 
-    vec3 trans_light_pos = (pass_view_matrix * vec4(sunlight_position,1.0)).xyz;
+    //vec3 trans_light_pos = (pass_view_matrix * vec4(sunlight_position,1.0)).xyz;
     vec3 light_dir = normalize(sunlight_position - pass_Position); //postition of the surface (3D) & normalize (pass_position)
     //vec3 light_dir = normalize(trans_light_pos - pass_Position);
     vec3 view_dir = normalize(pass_Camera_Position - pass_Position); //position of the viewer

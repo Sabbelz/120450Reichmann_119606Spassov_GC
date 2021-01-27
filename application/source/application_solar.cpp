@@ -363,7 +363,7 @@ void ApplicationSolar::initializeShaderPrograms() {
 
 // load models
 void ApplicationSolar::initializeGeometry() {
-    model planet_model = model_loader::obj(m_resource_path_ + "models/sphere.obj", model::NORMAL);
+    model planet_model = model_loader::obj(m_resource_path_ + "models/sphere.obj", model::NORMAL | model::TEXCOORD);
 
     // generate vertex array object
     glGenVertexArrays(1, &planet_object_.vertex_AO);
@@ -387,6 +387,10 @@ void ApplicationSolar::initializeGeometry() {
     // second attribute is 3 floats with no offset & stride
     glVertexAttribPointer(1, model::NORMAL.components, model::NORMAL.type, GL_FALSE, planet_model.vertex_bytes,
                           planet_model.offsets[model::NORMAL]);
+    glEnableVertexAttribArray(2);
+    // third attribute with two floats for position
+    glVertexAttribPointer(2, model::TEXCOORD.components, model::TEXCOORD.type, GL_FALSE, planet_model.vertex_bytes,
+                          planet_model.offsets[model::TEXCOORD]);
 
     // generate generic buffer
     glGenBuffers(1, &planet_object_.element_BO);
@@ -619,7 +623,7 @@ void ApplicationSolar::initializeSceneGraph() {
     // resource_path_ is assigned in the read_resource_path() function in utils.cpp as "/../../resources/"
     std::string sphere_object_path = m_resource_path_ + "models/sphere.obj";
     // load sphere.obj, this model is the base for all solar bodies which are spherical
-    model sphere_model = model_loader::obj(sphere_object_path, model::NORMAL);
+    model sphere_model = model_loader::obj(sphere_object_path, model::NORMAL | model::TEXCOORD);
     // get a pointer to the scene root, which will be the parent node of the solar system
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
 
