@@ -723,7 +723,7 @@ void ApplicationSolar::initializeSceneGraph() {
 
     ////////// Saturn //////////
     std::shared_ptr<Node> cronos = std::make_shared<Node>("cronos", scene_root,
-                                                          glm::translate({}, glm::fvec3{2.7f, 0.0f, 0.0f}));
+                                                          glm::translate({}, glm::fvec3{3.0f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> saturn_geom = std::make_shared<GeometryNode>("saturn_geom", cronos,
                                                                                glm::scale({}, glm::fvec3{0.15f, 0.15f,
                                                                                                          0.15f}),
@@ -736,7 +736,7 @@ void ApplicationSolar::initializeSceneGraph() {
 
     ////////// Uranus //////////
     std::shared_ptr<Node> uranos = std::make_shared<Node>("uranos", scene_root,
-                                                          glm::translate({}, glm::fvec3{3.0f, 0.0f, 0.0f}));
+                                                          glm::translate({}, glm::fvec3{3.3f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> uranus_geom = std::make_shared<GeometryNode>("uranus_geom", uranos,
                                                                                glm::scale({},
                                                                                           glm::fvec3{0.1f, 0.1f, 0.1f}),
@@ -749,7 +749,7 @@ void ApplicationSolar::initializeSceneGraph() {
 
     ////////// Neptune //////////
     std::shared_ptr<Node> poseidon = std::make_shared<Node>("poseidon", scene_root,
-                                                            glm::translate({}, glm::fvec3{3.2f, 0.0f, 0.0f}));
+                                                            glm::translate({}, glm::fvec3{3.7f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> neptune_geom = std::make_shared<GeometryNode>("neptune_geom", poseidon,
                                                                                 glm::scale({}, glm::fvec3{0.1f, 0.1f,
                                                                                                           0.1f}),
@@ -762,7 +762,7 @@ void ApplicationSolar::initializeSceneGraph() {
 
     ////////// Pluto //////////
     std::shared_ptr<Node> hades = std::make_shared<Node>("hades", scene_root,
-                                                         glm::translate({}, glm::fvec3{3.5f, 0.0f, 0.0f}));
+                                                         glm::translate({}, glm::fvec3{4.0f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> pluto_geom = std::make_shared<GeometryNode>("pluto_geom", hades,
                                                                               glm::scale({}, glm::fvec3{0.012f, 0.012f,
                                                                                                         0.012f}),
