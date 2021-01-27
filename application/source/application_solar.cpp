@@ -318,6 +318,7 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("planet").u_locs["ModelMatrix"] = -1;
     m_shaders.at("planet").u_locs["ViewMatrix"] = -1;
     m_shaders.at("planet").u_locs["ProjectionMatrix"] = -1;
+    m_shaders.at("planet").u_locs["TextureSampler"] = -1;
 
     // loading and storing of cel shading shader
     m_shaders.emplace("cel_shading", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/cel_shading.vert"},
@@ -329,6 +330,7 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("cel_shading").u_locs["ModelMatrix"] = -1;
     m_shaders.at("cel_shading").u_locs["ViewMatrix"] = -1;
     m_shaders.at("cel_shading").u_locs["ProjectionMatrix"] = -1;
+    //m_shaders.at("cel_shading").u_locs["TextureSampler"] = -1;
 
     ///// stars shader initialization /////
 
