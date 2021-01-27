@@ -1,7 +1,7 @@
 #version 150
 
 // input variables
-in vec2 pass_tex_coordiantes;
+in vec2 pass_tex_coordinates;
 in vec3 pass_Normal, pass_Camera_Position, pass_Position;
 in mat4 pass_normal_matrix, pass_model_matrix, pass_view_matrix;
 
@@ -16,8 +16,8 @@ uniform sampler2D texture_sampler, normal_sampler;
 void main() {
 
     // get information from texture(colour) and normal map (normal)
-    vec4 sphere_texture = texture(texture_sampler, pass_tex_coordiantes);
-    vec4 sphere_normal_texture = texture(normal_sampler, pass_tex_coordiantes);
+    vec4 sphere_texture = texture(texture_sampler, pass_tex_coordinates);
+    vec4 sphere_normal_texture = texture(normal_sampler, pass_tex_coordinates);
 
     // predefined normal scale
     float normal_scale = 0.5;
