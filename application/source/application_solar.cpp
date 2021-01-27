@@ -43,8 +43,7 @@ ApplicationSolar::ApplicationSolar(std::string const &resource_path)
     initializeShaderPrograms();
     initializeOrbits();
     initializeTextures();
-    initializeMaps();
-    //initializeSkybox();
+    initializeSkybox();
 
 
 }
@@ -103,12 +102,14 @@ void ApplicationSolar::render() const {
 
         // textures
         texture_object texture = planet_textures.at(name + "_tex");
-        texture_object map = planet_textures.at(name + "map_tex");
+        texture_object map = planet_textures.at(name + "_map_tex");
 
         glActiveTexture(GL_TEXTURE1 + 2 * index);
         glBindTexture(texture.target, texture.handle);
 
         glActiveTexture(GL_TEXTURE1 + 2 * index + 1);
+
+        glBindTexture(map.target, map.handle);
 
         // declaring solar body base colour
         GLint planet_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "planet_colour");
@@ -199,6 +200,15 @@ void ApplicationSolar::render() const {
 
     ///// SKYBOX SECTION /////
 
+    glDepthFunc(GL_EQUAL);
+    glUseProgram(m_shaders.at("skybox").handle);
+    glBindVertexArray(skybox_object_.vertex_AO);
+    glActiveTexture(active_skybox_texture);
+
+    glBindTexture(skybox_texture.target, skybox_texture.handle);
+
+    glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
+    glDepthFunc(GL_LESS);
 }
 
 void ApplicationSolar::uploadView() {
@@ -231,11 +241,12 @@ void ApplicationSolar::uploadView() {
 
     glUniformMatrix4fv(m_shaders.at("orbits").u_locs.at("ViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
-    /*///// skybox /////
+
+    ///// skybox /////
     glUseProgram(m_shaders.at("skybox").handle);
 
     glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ViewMatrix"),
-                       1, GL_FALSE, glm::value_ptr(view_matrix));*/
+                       1, GL_FALSE, glm::value_ptr(view_matrix));
 }
 
 void ApplicationSolar::uploadProjection() {
@@ -267,11 +278,12 @@ void ApplicationSolar::uploadProjection() {
 
     glUniformMatrix4fv(m_shaders.at("orbits").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection_));
-    /*///// skybox /////
+
+    ///// skybox /////
     glUseProgram(m_shaders.at("skybox").handle);
 
     glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ProjectionMatrix"),
-                       1, GL_FALSE, glm::value_ptr(m_view_projection_));*/
+                       1, GL_FALSE, glm::value_ptr(m_view_projection_));
 
 }
 
@@ -334,11 +346,11 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("orbits").u_locs["ProjectionMatrix"] = -1;
 
     ///// skybox shader initialization /////
-    /*m_shaders.emplace("skybox", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/skybox.vert"},
+    m_shaders.emplace("skybox", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/skybox.vert"},
                                                        {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/skybox.frag"}}});
 
     m_shaders.at("skybox").u_locs["ProjectionMatrix"] = -1;
-    m_shaders.at("skybox").u_locs["ViewMatrix"] = -1;*/
+    m_shaders.at("skybox").u_locs["ViewMatrix"] = -1;
 }
 
 // load models
@@ -462,7 +474,7 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount) {
 
 void ApplicationSolar::initializeOrbits() {
 
-    unsigned int orbit_points_amount = 100;
+    int orbit_points_amount = 100;
     // getting scene root
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     std::vector<GLfloat> orbits_positions;
@@ -564,6 +576,7 @@ void ApplicationSolar::initializeSkybox() {
             -1.0f, -1.0f, 1.0f,
             1.0f, -1.0f, 1.0f
     };
+
     skybox_model.data = skybox;
     skybox_model.vertex_num = skybox.size();
 
@@ -781,7 +794,6 @@ void ApplicationSolar::initializeTextures() {
 
         glBindTexture(texture.target, texture.handle);
 
-
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -795,11 +807,6 @@ void ApplicationSolar::initializeTextures() {
 
     }
 
-}
-
-void ApplicationSolar::initializeMaps() {
-
-    int index = 0;
     for (std::string planet : solar_bodies_geom_names_) {
         pixel_data pixel_planet;
         pixel_planet = texture_loader::file(m_resource_path_ + "maps/" + planet + "_map.png");
@@ -813,7 +820,7 @@ void ApplicationSolar::initializeMaps() {
         texture_object texture;
         glGenTextures(1, &texture.handle);
         texture.target = GL_TEXTURE_2D;
-        std::string texture_name = planet + "map_tex";
+        std::string texture_name = planet + "_map_tex";
         planet_textures.insert({texture_name, texture});
 
         glBindTexture(texture.target, texture.handle);
@@ -830,6 +837,42 @@ void ApplicationSolar::initializeMaps() {
 
         index++;
     }
+
+    texture_object Skybox;
+    pixel_data skybox_data;
+    int skybox_index = 0;
+
+    active_skybox_texture = GL_TEXTURE1+index;
+    glActiveTexture(active_skybox_texture);
+
+    glGenTextures(1, &Skybox.handle);
+    Skybox.target = GL_TEXTURE_CUBE_MAP;
+    skybox_texture = Skybox;
+
+    glBindTexture(Skybox.target, Skybox.handle);
+
+    std::vector<std::string> sides = {"left", "right", "top", "bottom", "front", "back"};
+
+    for (std::string side : sides) {
+        skybox_data = texture_loader::file(m_resource_path_ + "textures/sky_" + side + ".png");
+
+        GLsizei width = (GLsizei) skybox_data.width;
+        GLsizei height = (GLsizei) skybox_data.height;
+        GLenum channel_number = skybox_data.channels;
+        GLenum channel_type = skybox_data.channel_type;
+
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + skybox_index, 0, channel_number, width, height, 0, channel_number, channel_type, skybox_data.ptr());
+
+        skybox_index++;
+    }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////

@@ -36,7 +36,6 @@ protected:
     void initializeOrbits();
     void initializeSkybox();
     void initializeTextures();
-    void initializeMaps();
 
 
     // update uniform values
@@ -61,8 +60,8 @@ protected:
     glm::fmat4 m_view_projection_;
 
     //skybox
-    GLenum active_skymap_texture;
-    texture_object skymap_texture;
+    GLenum active_skybox_texture;
+    texture_object skybox_texture;
 
     // GeometryNode names of all solar bodies
     std::array<std::string, 11> solar_bodies_geom_names_;
