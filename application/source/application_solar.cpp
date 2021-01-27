@@ -20,14 +20,11 @@ using namespace gl;
 
 bool ApplicationSolar::paused_ = false;
 
-ApplicationSolar::ApplicationSolar(std::string const& resource_path)
-   : Application{resource_path}
-   , planet_object_{}
-   , planet_textures{}
-   , m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
-   , m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
-   shader_name_("planet")
-{
+ApplicationSolar::ApplicationSolar(std::string const &resource_path)
+        : Application{resource_path}, planet_object_{}, planet_textures{},
+          m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})},
+          m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
+          shader_name_("planet") {
 
     solar_bodies_geom_names_[0] = "sun_geom";
     solar_bodies_geom_names_[1] = "mercury_geom";
@@ -46,6 +43,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
     initializeShaderPrograms();
     initializeOrbits();
     initializeTextures();
+    initializeMaps();
     //initializeSkybox();
 
 
@@ -72,7 +70,7 @@ void ApplicationSolar::render() const {
     int index = 0;
 
     // this should render like all of the solar bodies
-    for (auto const& name: solar_bodies_geom_names_){
+    for (auto const &name: solar_bodies_geom_names_) {
         std::shared_ptr<Node> solar_body_geom = scene_root->getChildren(name);
         glm::mat4x4 parents_local_transform_matrix = solar_body_geom->getParent()->getLocalTransform();
         std::shared_ptr<GeometryNode> solar_body_pointer_cast = std::static_pointer_cast<GeometryNode>(solar_body_geom);
@@ -97,7 +95,7 @@ void ApplicationSolar::render() const {
         // extra matrix for normal transformation to keep them orthogonal to surface
         glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
         glUniformMatrix4fv(m_shaders.at(shader_name_).u_locs.at("NormalMatrix"),
-                               1, GL_FALSE, glm::value_ptr(normal_matrix));
+                           1, GL_FALSE, glm::value_ptr(normal_matrix));
 
         // bind the VAO to draw
         glBindVertexArray(planet_object_.vertex_AO);
@@ -105,8 +103,9 @@ void ApplicationSolar::render() const {
 
         // textures
         texture_object texture = planet_textures.at(name + "_tex");
+        texture_object map = planet_textures.at(name + "map_tex");
 
-        glActiveTexture(GL_TEXTURE1+ 2 * index);
+        glActiveTexture(GL_TEXTURE1 + 2 * index);
         glBindTexture(texture.target, texture.handle);
 
         glActiveTexture(GL_TEXTURE1 + 2 * index + 1);
@@ -114,9 +113,10 @@ void ApplicationSolar::render() const {
         // declaring solar body base colour
         GLint planet_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "planet_colour");
         LightColor solar_body_colour = solar_body->getBaseColour();
-        glUniform3f(planet_colour_location, solar_body_colour.r/255.0f, solar_body_colour.g/255.0f, solar_body_colour.b/255.0f);
+        glUniform3f(planet_colour_location, solar_body_colour.r / 255.0f, solar_body_colour.g / 255.0f,
+                    solar_body_colour.b / 255.0f);
 
-        if("sun_geom" != name){
+        if ("sun_geom" != name) {
 
             // get main sun node from scene graph
             std::shared_ptr<Node> sun_uncasted = scene_root->getChildren("solaris");
@@ -128,29 +128,34 @@ void ApplicationSolar::render() const {
             LightColor sunlight_colour = solaris->getLightColor();
             // declaring uniform variable for sunlight colour
             GLint sunlight_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_colour");
-            glUniform3f(sunlight_colour_location, sunlight_colour.r/255.0f, sunlight_colour.g/255.0f, sunlight_colour.b/255.0f);
+            glUniform3f(sunlight_colour_location, sunlight_colour.r / 255.0f, sunlight_colour.g / 255.0f,
+                        sunlight_colour.b / 255.0f);
 
             // getting the sunlight position from the world transformation matrix of the sun
             glm::fvec4 sunlight_position = solaris->getWorldTransform() * glm::fvec4(0.0f, 0.0f, 0.0f, 1.0f);
             // declaring uniform variable for sunlight position
-            GLint sunlight_position_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_position");
+            GLint sunlight_position_location = glGetUniformLocation(m_shaders.at(shader_name_).handle,
+                                                                    "sunlight_position");
             glUniform3f(sunlight_position_location, sunlight_position.x, sunlight_position.y, sunlight_position.z);
 
             // getting sunlight intensity
             double sunlight_intensity = solaris->getLightIntensity();
             // declaring uniform variable for sunlight intensity
-            GLint sunlight_intensity_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "sunlight_intensity");
+            GLint sunlight_intensity_location = glGetUniformLocation(m_shaders.at(shader_name_).handle,
+                                                                     "sunlight_intensity");
             glUniform1f(sunlight_intensity_location, sunlight_intensity);
 
             // setting and declaring ambient light strength on all non star solar bodies
-            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "ambient_intensity");
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle,
+                                                                   "ambient_intensity");
             glUniform1f(ambient_strength_location, 0.05f);
 
             // extra case for sun
         } else {
 
             // setting and declaring ambient light strength for the sun
-            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "ambient_intensity");
+            GLint ambient_strength_location = glGetUniformLocation(m_shaders.at(shader_name_).handle,
+                                                                   "ambient_intensity");
             glUniform1f(ambient_strength_location, 1.0f);
 
         }
@@ -172,10 +177,10 @@ void ApplicationSolar::render() const {
 
     glUseProgram(m_shaders.at("orbits").handle);
 
-    for (auto& planet_name : solar_bodies_geom_names_) {
+    for (auto &planet_name : solar_bodies_geom_names_) {
 
-        auto orbit = scene_graph_->getRoot()->getChildren(planet_name+"_orbit");
-        auto orbit_geom = std::static_pointer_cast<GeometryNode> (orbit);
+        auto orbit = scene_graph_->getRoot()->getChildren(planet_name + "_orbit");
+        auto orbit_geom = std::static_pointer_cast<GeometryNode>(orbit);
         auto orbit_world_transform = orbit->getWorldTransform();
         model orbit_model = orbit_geom->getGeometry();
         std::vector<GLfloat> orbit_data = (*orbit_geom).getGeometry().data;
@@ -184,7 +189,7 @@ void ApplicationSolar::render() const {
                            1, GL_FALSE, glm::value_ptr(orbit_world_transform));
 
         glBindBuffer(GL_ARRAY_BUFFER, orbit_object_.vertex_BO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float)*orbit_data.size(), orbit_data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * orbit_data.size(), orbit_data.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(orbit_object_.vertex_AO);
 
@@ -271,12 +276,12 @@ void ApplicationSolar::uploadProjection() {
 }
 
 // update uniform locations
-void ApplicationSolar::uploadUniforms() { 
-  // bind shader to which to upload uniforms
-  //glUseProgram(m_shaders.at("planet").handle);
-  // upload uniform values to new locations
-  uploadView();
-  uploadProjection();
+void ApplicationSolar::uploadUniforms() {
+    // bind shader to which to upload uniforms
+    //glUseProgram(m_shaders.at("planet").handle);
+    // upload uniform values to new locations
+    uploadView();
+    uploadProjection();
 }
 
 ///////////////////////////// initialisation functions /////////////////////////
@@ -287,7 +292,8 @@ void ApplicationSolar::initializeShaderPrograms() {
 
     // store shader program objects in container
     m_shaders.emplace("planet", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/simple.vert"},
-                                           {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/simple.frag"}}});
+                                                       {GL_FRAGMENT_SHADER,
+                                                               m_resource_path_ + "shaders/simple.frag"}}});
 
     // request uniform locations for shader program
     m_shaders.at("planet").u_locs["NormalMatrix"] = -1;
@@ -297,7 +303,8 @@ void ApplicationSolar::initializeShaderPrograms() {
 
     // loading and storing of cel shading shader
     m_shaders.emplace("cel_shading", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/cel_shading.vert"},
-                                                     {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/cel_shading.frag"}}});
+                                                            {GL_FRAGMENT_SHADER,
+                                                                    m_resource_path_ + "shaders/cel_shading.frag"}}});
 
     // request uniform locations for shader program
     m_shaders.at("cel_shading").u_locs["NormalMatrix"] = -1;
@@ -309,7 +316,7 @@ void ApplicationSolar::initializeShaderPrograms() {
 
     // store star shader
     m_shaders.emplace("star", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/vao.vert"},
-                                             {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/vao.frag"}}});
+                                                     {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/vao.frag"}}});
 
     // request uniform locations for shader program
     m_shaders.at("star").u_locs["ModelViewMatrix"] = -1;
@@ -319,7 +326,7 @@ void ApplicationSolar::initializeShaderPrograms() {
     ///// orbits shader initialization /////
 
     m_shaders.emplace("orbits", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/orb.vert"},
-                                                     {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/orb.frag"}}});
+                                                       {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/orb.frag"}}});
 
     // request uniform locations for shader program
     m_shaders.at("orbits").u_locs["ModelMatrix"] = -1;
@@ -336,43 +343,46 @@ void ApplicationSolar::initializeShaderPrograms() {
 
 // load models
 void ApplicationSolar::initializeGeometry() {
-  model planet_model = model_loader::obj(m_resource_path_ + "models/sphere.obj", model::NORMAL);
+    model planet_model = model_loader::obj(m_resource_path_ + "models/sphere.obj", model::NORMAL);
 
-  // generate vertex array object
-  glGenVertexArrays(1, &planet_object_.vertex_AO);
-  // bind the array for attaching buffers
-  glBindVertexArray(planet_object_.vertex_AO);
+    // generate vertex array object
+    glGenVertexArrays(1, &planet_object_.vertex_AO);
+    // bind the array for attaching buffers
+    glBindVertexArray(planet_object_.vertex_AO);
 
-  // generate generic buffer
-  glGenBuffers(1, &planet_object_.vertex_BO);
-  // bind this as an vertex array buffer containing all attributes
-  glBindBuffer(GL_ARRAY_BUFFER, planet_object_.vertex_BO);
-  // configure currently bound array buffer
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * planet_model.data.size(), planet_model.data.data(), GL_STATIC_DRAW);
+    // generate generic buffer
+    glGenBuffers(1, &planet_object_.vertex_BO);
+    // bind this as an vertex array buffer containing all attributes
+    glBindBuffer(GL_ARRAY_BUFFER, planet_object_.vertex_BO);
+    // configure currently bound array buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * planet_model.data.size(), planet_model.data.data(), GL_STATIC_DRAW);
 
-  // activate first attribute on gpu
-  glEnableVertexAttribArray(0);
-  // first attribute is 3 floats with no offset & stride
-  glVertexAttribPointer(0, model::POSITION.components, model::POSITION.type, GL_FALSE, planet_model.vertex_bytes, planet_model.offsets[model::POSITION]);
-  // activate second attribute on gpu
-  glEnableVertexAttribArray(1);
-  // second attribute is 3 floats with no offset & stride
-  glVertexAttribPointer(1, model::NORMAL.components, model::NORMAL.type, GL_FALSE, planet_model.vertex_bytes, planet_model.offsets[model::NORMAL]);
+    // activate first attribute on gpu
+    glEnableVertexAttribArray(0);
+    // first attribute is 3 floats with no offset & stride
+    glVertexAttribPointer(0, model::POSITION.components, model::POSITION.type, GL_FALSE, planet_model.vertex_bytes,
+                          planet_model.offsets[model::POSITION]);
+    // activate second attribute on gpu
+    glEnableVertexAttribArray(1);
+    // second attribute is 3 floats with no offset & stride
+    glVertexAttribPointer(1, model::NORMAL.components, model::NORMAL.type, GL_FALSE, planet_model.vertex_bytes,
+                          planet_model.offsets[model::NORMAL]);
 
-   // generate generic buffer
-  glGenBuffers(1, &planet_object_.element_BO);
-  // bind this as an vertex array buffer containing all attributes
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, planet_object_.element_BO);
-  // configure currently bound array buffer
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, model::INDEX.size * planet_model.indices.size(), planet_model.indices.data(), GL_STATIC_DRAW);
+    // generate generic buffer
+    glGenBuffers(1, &planet_object_.element_BO);
+    // bind this as an vertex array buffer containing all attributes
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, planet_object_.element_BO);
+    // configure currently bound array buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model::INDEX.size * planet_model.indices.size(), planet_model.indices.data(),
+                 GL_STATIC_DRAW);
 
-  // store type of primitive to draw
-  planet_object_.draw_mode = GL_TRIANGLES;
-  // transfer number of indices to model object 
-  planet_object_.num_elements = GLsizei(planet_model.indices.size());
+    // store type of primitive to draw
+    planet_object_.draw_mode = GL_TRIANGLES;
+    // transfer number of indices to model object
+    planet_object_.num_elements = GLsizei(planet_model.indices.size());
 }
 
-void ApplicationSolar::initializeStars(unsigned int const star_amount){
+void ApplicationSolar::initializeStars(unsigned int const star_amount) {
 
     //std::array<GLfloat, amount> stars_pos_col_data; sad
     std::vector<GLfloat> stars_pos_col_data;
@@ -394,14 +404,14 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
         int second_sign = sign_distribution(generator);
         int third_sign = sign_distribution(generator);
 
-        for(int help_me = 0; help_me < 3; ++help_me){
-            if(first_sign == 0){
+        for (int help_me = 0; help_me < 3; ++help_me) {
+            if (first_sign == 0) {
                 first_sign = -1;
             }
-            if(second_sign == 0){
+            if (second_sign == 0) {
                 second_sign = -1;
             }
-            if(third_sign == 0){
+            if (third_sign == 0) {
                 third_sign = -1;
             }
         }
@@ -450,7 +460,7 @@ void ApplicationSolar::initializeStars(unsigned int const star_amount){
 
 }
 
-void ApplicationSolar::initializeOrbits(){
+void ApplicationSolar::initializeOrbits() {
 
     unsigned int orbit_points_amount = 100;
     // getting scene root
@@ -460,7 +470,7 @@ void ApplicationSolar::initializeOrbits(){
 
     float rotation_angle = 0.1f;
 
-    for(std::string const& name : solar_bodies_geom_names_){
+    for (std::string const &name : solar_bodies_geom_names_) {
 
         orbits_positions.clear();
 
@@ -471,9 +481,9 @@ void ApplicationSolar::initializeOrbits(){
         std::shared_ptr<GeometryNode> solar_body_geom = std::static_pointer_cast<GeometryNode>(solar_body_for_downcast);
         std::shared_ptr<Node> solar_body_hold = solar_body_geom->getParent();
 
-        glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, rotation_angle, glm::fvec3{ 0.0f,1.0f,0.0f });
+        glm::mat4x4 rotation_matrix = glm::rotate(glm::mat4x4{}, rotation_angle, glm::fvec3{0.0f, 1.0f, 0.0f});
 
-        glm::fvec4 position_point = solar_body_hold->getLocalTransform() * glm::fvec4{ 0.0f,0.0f,0.0f,1.0f};
+        glm::fvec4 position_point = solar_body_hold->getLocalTransform() * glm::fvec4{0.0f, 0.0f, 0.0f, 1.0f};
 
         for (int i = 0; i < orbit_points_amount; ++i) {
             orbits_positions.push_back(position_point.x);
@@ -486,7 +496,7 @@ void ApplicationSolar::initializeOrbits(){
         orbit_model.data = orbits_positions;
         orbit_model.vertex_num = orbit_points_amount;
 
-        auto orbit_node = std::make_shared<GeometryNode>( name + "_orbit", solar_body_hold->getParent(), orbit_model);
+        auto orbit_node = std::make_shared<GeometryNode>(name + "_orbit", solar_body_hold->getParent(), orbit_model);
 
         solar_body_hold->getParent()->addChildren(orbit_node);
         orbit_node->setParent(solar_body_hold->getParent());
@@ -497,13 +507,13 @@ void ApplicationSolar::initializeOrbits(){
 
     glGenBuffers(1, &orbit_object_.vertex_BO);
     glBindBuffer(GL_ARRAY_BUFFER, orbit_object_.vertex_BO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof (float )* orbit_points_amount, orbits_positions.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * orbit_points_amount, orbits_positions.data(), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(6 * sizeof(float)), nullptr);
 
     orbit_object_.draw_mode = GL_LINE_STRIP;
-    orbit_object_.num_elements = GLsizei (orbit_points_amount);
+    orbit_object_.num_elements = GLsizei(orbit_points_amount);
 
 }
 
@@ -512,47 +522,47 @@ void ApplicationSolar::initializeSkybox() {
 
     std::vector<GLfloat> skybox = {
 
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
             -1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
-            1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
             -1.0f, -1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
             1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f, -1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-            -1.0f,  1.0f, -1.0f,
-            1.0f,  1.0f, -1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
 
             -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
             1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
-            1.0f, -1.0f,  1.0f
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f
     };
     skybox_model.data = skybox;
     skybox_model.vertex_num = skybox.size();
@@ -568,7 +578,7 @@ void ApplicationSolar::initializeSkybox() {
     glGenBuffers(1, &skybox_object_.vertex_BO);
     glBindBuffer(GL_ARRAY_BUFFER, skybox_object_.vertex_BO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*skybox.size(), skybox.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * skybox.size(), skybox.data(), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(3 * sizeof(float)), 0);
@@ -578,7 +588,7 @@ void ApplicationSolar::initializeSkybox() {
     skybox_object_.num_elements = GLsizei(skybox.size());
 }
 
-void ApplicationSolar::initializeSceneGraph(){
+void ApplicationSolar::initializeSceneGraph() {
 
     // link scene graph singleton to the application
     scene_graph_ = SceneGraph::getSceneGraphInstance();
@@ -595,7 +605,8 @@ void ApplicationSolar::initializeSceneGraph(){
     ////////// Sun //////////
     std::shared_ptr<PointLightNode> solaris = std::make_shared<PointLightNode>("solaris", scene_root);
     std::shared_ptr<GeometryNode> sun_geom = std::make_shared<GeometryNode>("sun_geom", solaris,
-                                                                            glm::scale({}, glm::fvec3{0.5f, 0.5f, 0.5f}),
+                                                                            glm::scale({},
+                                                                                       glm::fvec3{0.5f, 0.5f, 0.5f}),
                                                                             sphere_model);
     // set parent and add geometry Node
     scene_root->addChildren(solaris);
@@ -610,7 +621,8 @@ void ApplicationSolar::initializeSceneGraph(){
     std::shared_ptr<Node> hermes = std::make_shared<Node>("hermes", scene_root,
                                                           glm::translate({}, glm::fvec3{1.0f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> mercury_geom = std::make_shared<GeometryNode>("mercury_geom", hermes,
-                                                                                glm::scale({}, glm::fvec3{ 0.03f,0.03f,0.03f }),
+                                                                                glm::scale({}, glm::fvec3{0.03f, 0.03f,
+                                                                                                          0.03f}),
                                                                                 sphere_model, 0.03f, 1.0f, 0.00007);
     // set parent and add geometry Node
     scene_root->addChildren(hermes);
@@ -620,10 +632,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Venus //////////
     std::shared_ptr<Node> aphrodite = std::make_shared<Node>("aphrodite", scene_root,
-                                                          glm::translate({}, glm::fvec3{1.2f, 0.0f, 0.0f}));
+                                                             glm::translate({}, glm::fvec3{1.2f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> venus_geom = std::make_shared<GeometryNode>("venus_geom", aphrodite,
-                                                                                glm::scale({}, glm::fvec3{ 0.04f,0.04f,0.04f }),
-                                                                                sphere_model, 0.04f, 1.2f, 0.00009f);
+                                                                              glm::scale({}, glm::fvec3{0.04f, 0.04f,
+                                                                                                        0.04f}),
+                                                                              sphere_model, 0.04f, 1.2f, 0.00009f);
     // set parent and add geometry Node
     scene_root->addChildren(aphrodite);
     aphrodite->addChildren(venus_geom);
@@ -632,9 +645,10 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Earth //////////
     std::shared_ptr<Node> terra = std::make_shared<Node>("terra", scene_root,
-                                                             glm::translate({}, glm::fvec3{1.4f, 0.0f, 0.0f}));
+                                                         glm::translate({}, glm::fvec3{1.4f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> earth_geom = std::make_shared<GeometryNode>("earth_geom", terra,
-                                                                              glm::scale({}, glm::fvec3{ 0.05f, 0.05f, 0.05f }),
+                                                                              glm::scale({}, glm::fvec3{0.05f, 0.05f,
+                                                                                                        0.05f}),
                                                                               sphere_model, 0.05f, 1.4f, 0.00008f);
     // set parent and add geometry Node
     scene_root->addChildren(terra);
@@ -644,10 +658,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Moon //////////
     std::shared_ptr<Node> artemis = std::make_shared<Node>("artemis", terra,
-                                                         glm::translate({}, glm::fvec3{0.1f, 0.0f, 0.0f}));
+                                                           glm::translate({}, glm::fvec3{0.1f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> moon_geom = std::make_shared<GeometryNode>("moon_geom", artemis,
-                                                                              glm::scale({}, glm::fvec3{0.0125f, 0.0125f, 0.0125f }),
-                                                                              sphere_model, 0.0125f, 0.1f, 0.0005);
+                                                                             glm::scale({}, glm::fvec3{0.0125f, 0.0125f,
+                                                                                                       0.0125f}),
+                                                                             sphere_model, 0.0125f, 0.1f, 0.0005);
     // set parent and add geometry Node
     terra->addChildren(artemis);
     artemis->addChildren(moon_geom);
@@ -656,9 +671,10 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Mars //////////
     std::shared_ptr<Node> ares = std::make_shared<Node>("ares", scene_root,
-                                                           glm::translate({}, glm::fvec3{2.0f, 0.0f, 0.0f}));
+                                                        glm::translate({}, glm::fvec3{2.0f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> mars_geom = std::make_shared<GeometryNode>("mars_geom", ares,
-                                                                             glm::scale({}, glm::fvec3{0.04f,0.04f,0.04f }),
+                                                                             glm::scale({}, glm::fvec3{0.04f, 0.04f,
+                                                                                                       0.04f}),
                                                                              sphere_model, 0.04f, 2.0f, 0.00007f);
     // set parent and add geometry Node
     scene_root->addChildren(ares);
@@ -668,10 +684,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Jupiter //////////
     std::shared_ptr<Node> zeus = std::make_shared<Node>("zeus", scene_root,
-                                                        glm::translate({}, glm::fvec3{2.5f,0.0f,0.0f}));
+                                                        glm::translate({}, glm::fvec3{2.5f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> jupiter_geom = std::make_shared<GeometryNode>("jupiter_geom", zeus,
-                                                                             glm::scale({}, glm::fvec3{0.2f,0.2f,0.2f }),
-                                                                             sphere_model, 0.2f, 2.5f, 0.00006f);
+                                                                                glm::scale({}, glm::fvec3{0.2f, 0.2f,
+                                                                                                          0.2f}),
+                                                                                sphere_model, 0.2f, 2.5f, 0.00006f);
     // set parent and add geometry Node
     scene_root->addChildren(zeus);
     zeus->addChildren(jupiter_geom);
@@ -680,10 +697,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Saturn //////////
     std::shared_ptr<Node> cronos = std::make_shared<Node>("cronos", scene_root,
-                                                        glm::translate({}, glm::fvec3{2.7f,0.0f,0.0f}));
+                                                          glm::translate({}, glm::fvec3{2.7f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> saturn_geom = std::make_shared<GeometryNode>("saturn_geom", cronos,
-                                                                                glm::scale({}, glm::fvec3{0.15f,0.15f,0.15f }),
-                                                                                sphere_model, 0.15f, 2.7f, 0.00005f);
+                                                                               glm::scale({}, glm::fvec3{0.15f, 0.15f,
+                                                                                                         0.15f}),
+                                                                               sphere_model, 0.15f, 2.7f, 0.00005f);
     // set parent and add geometry Node
     scene_root->addChildren(cronos);
     cronos->addChildren(saturn_geom);
@@ -692,9 +710,10 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Uranus //////////
     std::shared_ptr<Node> uranos = std::make_shared<Node>("uranos", scene_root,
-                                                          glm::translate({}, glm::fvec3{3.0f,0.0f,0.0f}));
+                                                          glm::translate({}, glm::fvec3{3.0f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> uranus_geom = std::make_shared<GeometryNode>("uranus_geom", uranos,
-                                                                               glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f }),
+                                                                               glm::scale({},
+                                                                                          glm::fvec3{0.1f, 0.1f, 0.1f}),
                                                                                sphere_model, 0.1f, 3.0f, 0.00004f);
     // set parent and add geometry Node
     scene_root->addChildren(uranos);
@@ -704,10 +723,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Neptune //////////
     std::shared_ptr<Node> poseidon = std::make_shared<Node>("poseidon", scene_root,
-                                                           glm::translate({}, glm::fvec3{3.2f,0.0f,0.0f}));
+                                                            glm::translate({}, glm::fvec3{3.2f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> neptune_geom = std::make_shared<GeometryNode>("neptune_geom", poseidon,
-                                                                               glm::scale({}, glm::fvec3{0.1f,0.1f,0.1f}),
-                                                                               sphere_model, 0.1f, 3.2f, 0.00003f);
+                                                                                glm::scale({}, glm::fvec3{0.1f, 0.1f,
+                                                                                                          0.1f}),
+                                                                                sphere_model, 0.1f, 3.2f, 0.00003f);
     // set parent and add geometry Node
     scene_root->addChildren(poseidon);
     poseidon->addChildren(neptune_geom);
@@ -716,10 +736,11 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Pluto //////////
     std::shared_ptr<Node> hades = std::make_shared<Node>("hades", scene_root,
-                                                            glm::translate({}, glm::fvec3{3.5f,0.0f,0.0f}));
+                                                         glm::translate({}, glm::fvec3{3.5f, 0.0f, 0.0f}));
     std::shared_ptr<GeometryNode> pluto_geom = std::make_shared<GeometryNode>("pluto_geom", hades,
-                                                                                glm::scale({}, glm::fvec3{0.012f,0.012f,0.012f}),
-                                                                                sphere_model, 0.012f, 3.5f, 0.00002f);
+                                                                              glm::scale({}, glm::fvec3{0.012f, 0.012f,
+                                                                                                        0.012f}),
+                                                                              sphere_model, 0.012f, 3.5f, 0.00002f);
     // set parent and add geometry Node
     scene_root->addChildren(hades);
     hades->addChildren(pluto_geom);
@@ -728,17 +749,18 @@ void ApplicationSolar::initializeSceneGraph(){
 
     ////////// Dionysus(Camera) ////////// (god of theater, so he kinda fits the camera job)
     std::shared_ptr<CameraNode> dionysus = std::make_shared<CameraNode>("dionysus", true, true,
-                                                                      m_view_projection_, scene_root);
+                                                                        m_view_projection_, scene_root);
     scene_root->addChildren(dionysus);
 
     initializeOrbits();
 }
+
 ////////////////////////////// TEXTURES //////////////////////////////
 void ApplicationSolar::initializeTextures() {
 
     int index = 0;
 
-    for(std::string planet : solar_bodies_geom_names_) {
+    for (std::string planet : solar_bodies_geom_names_) {
         pixel_data pixel_planet;
         pixel_planet = texture_loader::file(m_resource_path_ + "textures/" + planet + "_texture.png");
 
@@ -750,11 +772,11 @@ void ApplicationSolar::initializeTextures() {
 
 
         //glActiveTexture(GL_TEXTURE+planetIndex);
-        glActiveTexture(GL_TEXTURE1+2 * index);
+        glActiveTexture(GL_TEXTURE1 + 2 * index);
         texture_object texture;
         glGenTextures(1, &texture.handle);
         texture.target = GL_TEXTURE_2D;
-        std::string texture_name = planet+"_tex";
+        std::string texture_name = planet + "_tex";
         planet_textures.insert({texture_name, texture});
 
         glBindTexture(texture.target, texture.handle);
@@ -766,11 +788,48 @@ void ApplicationSolar::initializeTextures() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type, pixel_planet.ptr());
+        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type,
+                     pixel_planet.ptr());
+
+        index++;
+
+    }
+
+}
+
+void ApplicationSolar::initializeMaps() {
+
+    int index = 0;
+    for (std::string planet : solar_bodies_geom_names_) {
+        pixel_data pixel_planet;
+        pixel_planet = texture_loader::file(m_resource_path_ + "maps/" + planet + "_map.png");
+
+        GLsizei width = (GLsizei) pixel_planet.width;
+        GLsizei height = (GLsizei) pixel_planet.height;
+        GLenum channel_number = pixel_planet.channels;
+        GLenum channel_type = pixel_planet.channel_type;
+
+        glActiveTexture(GL_TEXTURE1 + 2 * index);
+        texture_object texture;
+        glGenTextures(1, &texture.handle);
+        texture.target = GL_TEXTURE_2D;
+        std::string texture_name = planet + "map_tex";
+        planet_textures.insert({texture_name, texture});
+
+        glBindTexture(texture.target, texture.handle);
+
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, channel_number, width, height, 0, channel_number, channel_type,
+                     pixel_planet.ptr());
 
         index++;
     }
-
 }
 
 ///////////////////////////// callback functions for window events /////////////////////////////////////////////////////
@@ -778,53 +837,51 @@ void ApplicationSolar::initializeTextures() {
 void ApplicationSolar::keyCallback(int key, int action, int mods) {
 
     // moving camera forward or moving camera backwards (W,S)
-    if (key == GLFW_KEY_W  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-      m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, -0.1f});
-      uploadView();
-    }
-    else if (key == GLFW_KEY_S  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-      m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, 0.1f});
-      uploadView();
+    if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, -0.1f});
+        uploadView();
+    } else if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, 0.1f});
+        uploadView();
     }
 
     // moving camera to the right or left handside (A,D)
-    if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.1f,0.0f,0.0f});
+    if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.1f, 0.0f, 0.0f});
         uploadView();
-    } else if(key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.1f,0.0f,0.0f});
+    } else if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.1f, 0.0f, 0.0f});
         uploadView();
     }
 
     // moving camera up and down (C,V)
-    if (key == GLFW_KEY_V && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f,0.1f,0.0f});
+    if (key == GLFW_KEY_V && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.1f, 0.0f});
         uploadView();
-    } else if(key == GLFW_KEY_C && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f,-0.1f,0.0f});
+    } else if (key == GLFW_KEY_C && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, -0.1f, 0.0f});
         uploadView();
     }
 
     // rotate camera in the right or left handside
-    if (key == GLFW_KEY_Z && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+    if (key == GLFW_KEY_Z && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
         m_view_transform = glm::rotate(m_view_transform, glm::radians(0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
-    } else if(key == GLFW_KEY_X && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+    } else if (key == GLFW_KEY_X && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
         m_view_transform = glm::rotate(m_view_transform, glm::radians(-0.5f), glm::vec3{0.0f, 1.0f, 0.0f});
         uploadView();
     }
 
     //pauses the animation
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS){
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
         paused_ = !paused_;
     }
 
     // for shader switching
-    if (key == GLFW_KEY_1 && (action == GLFW_PRESS)){
+    if (key == GLFW_KEY_1 && (action == GLFW_PRESS)) {
         shader_name_ = "planet";
         uploadView();
-    }
-    else if (key == GLFW_KEY_2 && (action == GLFW_PRESS)){
+    } else if (key == GLFW_KEY_2 && (action == GLFW_PRESS)) {
         shader_name_ = "cel_shading";
         uploadView();
     }
@@ -840,14 +897,14 @@ void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
 
 //handle resizing
 void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
-  // recalculate projection matrix for new aspect ration
-  m_view_projection_ = utils::calculate_projection_matrix(float(width) / float(height));
-  // upload new projection matrix
-  uploadProjection();
+    // recalculate projection matrix for new aspect ration
+    m_view_projection_ = utils::calculate_projection_matrix(float(width) / float(height));
+    // upload new projection matrix
+    uploadProjection();
 }
 
 
 // exe entry point
-int main(int argc, char* argv[]) {
-  Application::run<ApplicationSolar>(argc, argv, 3, 2);
+int main(int argc, char *argv[]) {
+    Application::run<ApplicationSolar>(argc, argv, 3, 2);
 }

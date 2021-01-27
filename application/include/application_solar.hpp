@@ -36,6 +36,7 @@ protected:
     void initializeOrbits();
     void initializeSkybox();
     void initializeTextures();
+    void initializeMaps();
 
 
     // update uniform values
