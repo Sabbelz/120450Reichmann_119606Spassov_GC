@@ -11,13 +11,13 @@ out vec4 out_Color;
 // lokal variables
 uniform vec3 sunlight_colour, sunlight_position, planet_colour;
 uniform float sunlight_intensity, ambient_intensity;
-uniform sampler2D texture_sampler, normal_sampler;
+uniform sampler2D TextureSampler, NormalSampler;
 
 void main() {
 
     // get information from texture(colour) and normal map (normal)
-    vec4 sphere_texture = texture(texture_sampler, pass_tex_coordinates);
-    vec4 sphere_normal_texture = texture(normal_sampler, pass_tex_coordinates);
+    vec4 sphere_texture = texture(TextureSampler, pass_tex_coordinates);
+    vec4 sphere_normal_texture = texture(NormalSampler, pass_tex_coordinates);
 
     // predefined normal scale
     float normal_scale = 0.5;
