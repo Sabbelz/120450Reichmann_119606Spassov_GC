@@ -211,14 +211,15 @@ void ApplicationSolar::render() const {
     glUseProgram(m_shaders.at("skybox").handle);
     glBindVertexArray(skybox_object_.vertex_AO);
     glActiveTexture(active_skybox_texture);
+    glBindTexture(skybox_texture.target, skybox_texture.handle);
 
     GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
-    glUniform1i(skybox_sampler,0);
+    glUniform1i(skybox_sampler,skybox_texture.handle);
 
-    glBindTexture(skybox_texture.target, skybox_texture.handle);
 
     glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
     glDepthFunc(GL_LESS);
+    //glDepthMask(GL_TRUE);
 }
 
 void ApplicationSolar::uploadView() {
