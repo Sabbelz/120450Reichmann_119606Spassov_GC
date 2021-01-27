@@ -212,6 +212,9 @@ void ApplicationSolar::render() const {
     glBindVertexArray(skybox_object_.vertex_AO);
     glActiveTexture(active_skybox_texture);
 
+    GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
+    glUniform1i(skybox_sampler,0);
+
     glBindTexture(skybox_texture.target, skybox_texture.handle);
 
     glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
