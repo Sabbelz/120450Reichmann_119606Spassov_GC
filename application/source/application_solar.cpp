@@ -106,10 +106,16 @@ void ApplicationSolar::render() const {
 
         glActiveTexture(GL_TEXTURE1 + 2 * index);
         glBindTexture(texture.target, texture.handle);
+        // add sampler
+        GLint sampler_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "TextureSampler");
+        glUniform1i(sampler_location, texture.handle);
 
         glActiveTexture(GL_TEXTURE1 + 2 * index + 1);
-
         glBindTexture(map.target, map.handle);
+        GLint normal_sampler_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "NormalSampler");
+        glUniform1i(normal_sampler_location, map.handle);
+
+
 
         // declaring solar body base colour
         GLint planet_colour_location = glGetUniformLocation(m_shaders.at(shader_name_).handle, "planet_colour");
