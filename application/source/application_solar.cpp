@@ -21,7 +21,7 @@ using namespace gl;
 bool ApplicationSolar::paused_ = false;
 
 ApplicationSolar::ApplicationSolar(std::string const &resource_path)
-        : Application{resource_path}, planet_object_{}, planet_textures{},
+        : Application{resource_path}, planet_object_{}, planet_textures{}, framebuffer_object_{},
           m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})},
           m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
           shader_name_("planet") {
@@ -859,6 +859,16 @@ void ApplicationSolar::initializeTextures() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+}
+
+bool ApplicationSolar::initializeFramebuffer() {
+    glGenFramebuffers(1, &framebuffer_object_.handle);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
+
+    texture_object texture_framebuffer;
+    glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &texture_framebuffer.handle);
+    glBindTexture(GL_TEXTURE_2D, texture_framebuffer.handle);
 }
 
 void ApplicationSolar::initializeMap() {

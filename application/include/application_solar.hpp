@@ -37,6 +37,7 @@ protected:
     void initializeSkybox();
     void initializeTextures();
     void initializeMap();
+    bool initializeFramebuffer();
 
 
     // update uniform values
@@ -54,6 +55,7 @@ protected:
     model_object star_object_;
     model_object orbit_object_;
     model_object skybox_object_;
+    framebuffer_object framebuffer_object_;
 
     // camera transform matrix
     glm::fmat4 m_view_transform;
