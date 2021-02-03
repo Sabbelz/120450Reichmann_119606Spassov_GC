@@ -42,4 +42,16 @@ struct shader_program {
   // uniform locations mapped to name
   std::map<std::string, GLint> u_locs{};
 };
+
+struct framebuffer_object {
+    // Handle of the framebuffer object
+    GLuint  handle = 0;
+
+    // Colours
+    texture_object texture_framebuffer;
+    GLuint framebuffer_handle = 0;
+
+    // Handle of the renderbuffer
+    GLuint renderbuffer_handle = 0;
+};
 #endif
