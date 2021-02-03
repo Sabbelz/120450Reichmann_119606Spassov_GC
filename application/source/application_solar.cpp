@@ -45,6 +45,7 @@ ApplicationSolar::ApplicationSolar(std::string const &resource_path)
     initializeTextures();
     initializeMap();
     initializeSkybox();
+    //initializeFramebuffer();
 
 
 }
@@ -66,8 +67,35 @@ ApplicationSolar::~ApplicationSolar() {
 
 void ApplicationSolar::render() const {
 
+    ///// FRAMEBUFFER SECTION /////
+    /*glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);*/
+
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     int index = 0;
+
+
+    ///// SKYBOX SECTION /////
+
+    glDepthFunc(GL_EQUAL);
+    glUseProgram(m_shaders.at("skybox").handle);
+    glBindVertexArray(skybox_object_.vertex_AO);
+    glActiveTexture(active_skybox_texture);
+    glBindTexture(skybox_texture.target, skybox_texture.handle);
+
+    GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
+    glUniform1i(skybox_sampler,skybox_texture.handle);
+
+
+    glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
+    glDepthFunc(GL_LESS);
+    //glDepthMask(GL_TRUE);
 
     // this should render like all of the solar bodies
     for (auto const &name: solar_bodies_geom_names_) {
@@ -173,6 +201,8 @@ void ApplicationSolar::render() const {
         index++;
     }
 
+
+
     ///// STAR SECTION /////
 
     glUseProgram(m_shaders.at("star").handle);
@@ -205,21 +235,7 @@ void ApplicationSolar::render() const {
     }
 
 
-    ///// SKYBOX SECTION /////
 
-    glDepthFunc(GL_EQUAL);
-    glUseProgram(m_shaders.at("skybox").handle);
-    glBindVertexArray(skybox_object_.vertex_AO);
-    glActiveTexture(active_skybox_texture);
-    glBindTexture(skybox_texture.target, skybox_texture.handle);
-
-    GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
-    glUniform1i(skybox_sampler,skybox_texture.handle);
-
-
-    glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
-    glDepthFunc(GL_LESS);
-    //glDepthMask(GL_TRUE);
 }
 
 void ApplicationSolar::uploadView() {
@@ -862,6 +878,9 @@ void ApplicationSolar::initializeTextures() {
 }
 
 bool ApplicationSolar::initializeFramebuffer() {
+    unsigned int width = initial_resolution.x;
+    unsigned int height = initial_resolution.y;
+
     glGenFramebuffers(1, &framebuffer_object_.handle);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
 
@@ -869,6 +888,38 @@ bool ApplicationSolar::initializeFramebuffer() {
     glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &texture_framebuffer.handle);
     glBindTexture(GL_TEXTURE_2D, texture_framebuffer.handle);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_framebuffer.handle, 0);
+
+    framebuffer_object_.texture_framebuffer = texture_framebuffer;
+    framebuffer_object_.framebuffer_handle = texture_framebuffer.handle;
+
+    unsigned int renderbuffer_object = 0;
+    glGenRenderbuffers(1, &renderbuffer_object);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_object);
+
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer_object);
+
+    framebuffer_object_.renderbuffer_handle = renderbuffer_object;
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    GLenum drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, drawBuffers);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        return false;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return true;
 }
 
 void ApplicationSolar::initializeMap() {
@@ -974,6 +1025,7 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
     m_view_projection_ = utils::calculate_projection_matrix(float(width) / float(height));
     // upload new projection matrix
     uploadProjection();
+    initializeFramebuffer();
 }
 
 
