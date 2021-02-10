@@ -45,7 +45,7 @@ ApplicationSolar::ApplicationSolar(std::string const &resource_path)
     initializeTextures();
     initializeMap();
     initializeSkybox();
-    //initializeFramebuffer();
+    initializeFramebuffer();
 
 
 }
@@ -68,14 +68,14 @@ ApplicationSolar::~ApplicationSolar() {
 void ApplicationSolar::render() const {
 
     ///// FRAMEBUFFER SECTION /////
-    /*glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDisable(GL_DEPTH_TEST);*/
+    glDisable(GL_DEPTH_TEST);
 
     std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
     int index = 0;
