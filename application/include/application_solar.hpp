@@ -38,6 +38,7 @@ protected:
     void initializeTextures();
     void initializeMap();
     bool initializeFramebuffer();
+    void initializeQuad();
 
 
     // update uniform values
@@ -55,6 +56,7 @@ protected:
     model_object star_object_;
     model_object orbit_object_;
     model_object skybox_object_;
+    model_object quad_object_;
     framebuffer_object framebuffer_object_;
 
     // camera transform matrix

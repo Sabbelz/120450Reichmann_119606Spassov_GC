@@ -46,6 +46,7 @@ ApplicationSolar::ApplicationSolar(std::string const &resource_path)
     initializeMap();
     initializeSkybox();
     initializeFramebuffer();
+    initializeQuad();
 
 
 }
@@ -63,14 +64,14 @@ ApplicationSolar::~ApplicationSolar() {
     glDeleteVertexArrays(1, &star_object_.vertex_AO);
 
     // deleting orbit stuff
-    //glDeleteBuffers(1, &orbit_object_.vertex_BO);
-    //glDeleteBuffers(1, &orbit_object_.element_BO);
-    //glDeleteBuffers(1, &orbit_object_.vertex_AO);
+    glDeleteBuffers(1, &orbit_object_.vertex_BO);
+    glDeleteBuffers(1, &orbit_object_.element_BO);
+    glDeleteBuffers(1, &orbit_object_.vertex_AO);
 
     // deleting skybox stuff
-    //glDeleteBuffers(1, &skybox_object_.vertex_BO);
-    //glDeleteBuffers(1, &skybox_object_.element_BO);
-    //glDeleteBuffers(1, &skybox_object_.vertex_AO);
+    glDeleteBuffers(1, &skybox_object_.vertex_BO);
+    glDeleteBuffers(1, &skybox_object_.element_BO);
+    glDeleteBuffers(1, &skybox_object_.vertex_AO);
 }
 
 ////////////////////////////// RENDERING //////////////////////////////
@@ -287,6 +288,15 @@ void ApplicationSolar::uploadView() {
 
     glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
+
+    ///// quad /////
+    glUseProgram(m_shaders.at("quad").handle);
+
+    glUniform1i(m_shaders.at("quad").u_locs.at("horizontal_mirroring"), horizontal_mirroring_);
+    glUniform1i(m_shaders.at("quad").u_locs.at("vertical_mirroring"), vertical_mirroring_);
+    glUniform1i(m_shaders.at("quad").u_locs.at("greyscale"), greyscale_);
+    glUniform1i(m_shaders.at("quad").u_locs.at("blur"), blur_);
+    glUniform2f(m_shaders.at("quad").u_locs.at("texture_size"), initial_resolution_.x , initial_resolution_.y);
 }
 
 void ApplicationSolar::uploadProjection() {
@@ -324,7 +334,6 @@ void ApplicationSolar::uploadProjection() {
 
     glUniformMatrix4fv(m_shaders.at("skybox").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection_));
-
 }
 
 // update uniform locations
@@ -393,6 +402,18 @@ void ApplicationSolar::initializeShaderPrograms() {
 
     m_shaders.at("skybox").u_locs["ProjectionMatrix"] = -1;
     m_shaders.at("skybox").u_locs["ViewMatrix"] = -1;
+
+    ///// quad shader initialization /////
+
+    m_shaders.emplace("quad", shader_program{{{GL_VERTEX_SHADER, m_resource_path_ + "shaders/quad.vert"},
+                                                            {GL_FRAGMENT_SHADER, m_resource_path_ + "shaders/quad.frag"}}});
+
+    m_shaders.at("quad").u_locs["screen_texture"] = 1;
+    m_shaders.at("quad").u_locs["horizontal_mirroring"] = 0;
+    m_shaders.at("quad").u_locs["vertical_mirroring"]= 0;
+    m_shaders.at("quad").u_locs["greyscale"]= 0;
+    m_shaders.at("quad").u_locs["blur"]= 0;
+    m_shaders.at("quad").u_locs["texture_size"] = -1;
 }
 
 // load models
@@ -647,6 +668,37 @@ void ApplicationSolar::initializeSkybox() {
     skybox_object_.num_elements = GLsizei(skybox.size());
 }
 
+void ApplicationSolar::initializeQuad(){
+
+    // quad creation
+    std::array<GLfloat, 24> quad = {
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            -1.0f, -1.0f,  0.0f, 0.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+            1.0f,  1.0f,  1.0f, 1.0f
+    };
+
+    // vertex array for quad
+    glGenVertexArrays(1, &quad_object_.vertex_AO);
+    glBindVertexArray(quad_object_.vertex_AO);
+
+    // generating and binding buffer to vertex array
+    glGenBuffers(1, &quad_object_.vertex_BO);
+    glBindBuffer(GL_ARRAY_BUFFER, quad_object_.vertex_BO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * quad.size(), quad.data(), GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GLsizei(4 * sizeof(float)), nullptr);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(4 * sizeof(float)), (void*)(2 * sizeof(float)));
+
+    quad_object_.draw_mode = GL_TRIANGLE_STRIP;
+    quad_object_.num_elements = GLsizei(quad.size() / 4);
+}
+
 void ApplicationSolar::initializeSceneGraph() {
 
     // link scene graph singleton to the application
@@ -811,7 +863,7 @@ void ApplicationSolar::initializeSceneGraph() {
                                                                         m_view_projection_, scene_root);
     scene_root->addChildren(dionysus);
 
-    initializeOrbits();
+    //initializeOrbits();
 }
 
 ////////////////////////////// TEXTURES //////////////////////////////
