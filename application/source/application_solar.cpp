@@ -84,26 +84,14 @@ void ApplicationSolar::render() const {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //glDisable(GL_DEPTH_TEST);
 
-    ///// SKYBOX SECTION /////
-
-    glDepthFunc(GL_EQUAL);
-    glUseProgram(m_shaders.at("skybox").handle);
-    glBindVertexArray(skybox_object_.vertex_AO);
-    glActiveTexture(active_skybox_texture);
-    glBindTexture(skybox_texture.target, skybox_texture.handle);
-
-    GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
-    glUniform1i(skybox_sampler,skybox_texture.handle);
-
-
-    glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
-    glDepthFunc(GL_LESS);
-    //glDepthMask(GL_TRUE);
+    ///// SOLAR BODY SECTION /////
 
     int index = 0;
     // this should render like all of the solar bodies
@@ -220,6 +208,22 @@ void ApplicationSolar::render() const {
     glBindVertexArray(star_object_.vertex_AO);
     glDrawArrays(star_object_.draw_mode, GLint(0), star_object_.num_elements);
 
+    ///// SKYBOX SECTION /////
+
+    glDepthFunc(GL_EQUAL);
+    glUseProgram(m_shaders.at("skybox").handle);
+    glBindVertexArray(skybox_object_.vertex_AO);
+    glActiveTexture(active_skybox_texture);
+    glBindTexture(skybox_texture.target, skybox_texture.handle);
+
+    GLint skybox_sampler = glGetUniformLocation(m_shaders.at("skybox").handle, "Skybox");
+    glUniform1i(skybox_sampler,skybox_texture.handle);
+
+
+    glDrawArrays(GL_TRIANGLES, 0, skybox_object_.num_elements);
+    glDepthFunc(GL_LESS);
+    //glDepthMask(GL_TRUE);
+
     ///// ORBIT SECTION /////
 
     glUseProgram(m_shaders.at("orbits").handle);
@@ -245,10 +249,23 @@ void ApplicationSolar::render() const {
 
     ///// FRAMEBUFFER SECTION PART 2/2 /////
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    //glClear(GL_COLOR_BUFFER_BIT);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
 
+    ///// QUAD SECTION /////
+
+    glUseProgram(m_shaders.at("quad").handle);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, framebuffer_object_.framebuffer_handle);
+
+    GLint samplerLocation = glGetUniformLocation(m_shaders.at("quad").handle,"screen_texture");
+    glUniform1i(samplerLocation,0);
+
+    // rendering quad
+    glBindVertexArray(quad_object_.vertex_AO);
+    glDrawArrays(quad_object_.draw_mode, 0, quad_object_.num_elements);
 
 }
 
@@ -294,7 +311,7 @@ void ApplicationSolar::uploadView() {
 
     glUniform1i(m_shaders.at("quad").u_locs.at("horizontal_mirroring"), horizontal_mirroring_);
     glUniform1i(m_shaders.at("quad").u_locs.at("vertical_mirroring"), vertical_mirroring_);
-    glUniform1i(m_shaders.at("quad").u_locs.at("greyscale"), greyscale_);
+    glUniform1i(m_shaders.at("quad").u_locs.at("greyscale"), grayscale_);
     glUniform1i(m_shaders.at("quad").u_locs.at("blur"), blur_);
     glUniform2f(m_shaders.at("quad").u_locs.at("texture_size"), initial_resolution_.x , initial_resolution_.y);
 }
@@ -1073,6 +1090,46 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
     } else if (key == GLFW_KEY_2 && (action == GLFW_PRESS)) {
         shader_name_ = "cel_shading";
         uploadView();
+    }
+
+    if (key == GLFW_KEY_0){
+        if(blur_){
+            blur_ = false;
+            uploadView();
+        } else {
+            blur_ = true;
+            uploadView();
+        }
+    }
+
+    if (key == GLFW_KEY_9){
+        if(vertical_mirroring_){
+            vertical_mirroring_ = false;
+            uploadView();
+        } else {
+            vertical_mirroring_ = true;
+            uploadView();
+        }
+    }
+
+    if (key == GLFW_KEY_8){
+        if(horizontal_mirroring_){
+            horizontal_mirroring_ = false;
+            uploadView();
+        } else {
+            horizontal_mirroring_ = true;
+            uploadView();
+        }
+    }
+
+    if (key == GLFW_KEY_7){
+        if(grayscale_){
+            grayscale_ = false;
+            uploadView();
+        } else {
+            grayscale_ = true;
+            uploadView();
+        }
     }
 }
 
