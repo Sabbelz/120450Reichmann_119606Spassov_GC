@@ -1092,7 +1092,7 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
         uploadView();
     }
 
-    if (key == GLFW_KEY_0){
+    if (key == GLFW_KEY_0 && (action == GLFW_PRESS)){
         if(blur_){
             blur_ = false;
             uploadView();
@@ -1102,7 +1102,7 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
         }
     }
 
-    if (key == GLFW_KEY_9){
+    if (key == GLFW_KEY_9 && (action == GLFW_PRESS)){
         if(vertical_mirroring_){
             vertical_mirroring_ = false;
             uploadView();
@@ -1112,7 +1112,7 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
         }
     }
 
-    if (key == GLFW_KEY_8){
+    if (key == GLFW_KEY_8 && (action == GLFW_PRESS)){
         if(horizontal_mirroring_){
             horizontal_mirroring_ = false;
             uploadView();
@@ -1122,7 +1122,7 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
         }
     }
 
-    if (key == GLFW_KEY_7){
+    if (key == GLFW_KEY_7 && (action == GLFW_PRESS)){
         if(grayscale_){
             grayscale_ = false;
             uploadView();
