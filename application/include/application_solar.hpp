@@ -78,6 +78,10 @@ protected:
 
     //bool for the renderer to pause
     static bool paused_;
+    bool greyscale_ = false;
+    bool blur_ = false;
+    bool horizontal_mirroring_ = false;
+    bool vertical_mirroring_ = false;
 
 };
 

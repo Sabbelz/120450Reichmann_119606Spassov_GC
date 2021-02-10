@@ -21,10 +21,10 @@ using namespace gl;
 bool ApplicationSolar::paused_ = false;
 
 ApplicationSolar::ApplicationSolar(std::string const &resource_path)
-        : Application{resource_path}, planet_object_{}, planet_textures{}, framebuffer_object_{},
+        : Application{resource_path}, planet_object_{}, framebuffer_object_{},
           m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})},
           m_view_projection_{utils::calculate_projection_matrix(initial_aspect_ratio)},
-          shader_name_("planet") {
+          shader_name_("planet"), planet_textures{} {
 
     solar_bodies_geom_names_[0] = "sun_geom";
     solar_bodies_geom_names_[1] = "mercury_geom";
@@ -61,13 +61,25 @@ ApplicationSolar::~ApplicationSolar() {
     glDeleteBuffers(1, &star_object_.vertex_BO);
     glDeleteBuffers(1, &star_object_.element_BO);
     glDeleteVertexArrays(1, &star_object_.vertex_AO);
+
+    // deleting orbit stuff
+    //glDeleteBuffers(1, &orbit_object_.vertex_BO);
+    //glDeleteBuffers(1, &orbit_object_.element_BO);
+    //glDeleteBuffers(1, &orbit_object_.vertex_AO);
+
+    // deleting skybox stuff
+    //glDeleteBuffers(1, &skybox_object_.vertex_BO);
+    //glDeleteBuffers(1, &skybox_object_.element_BO);
+    //glDeleteBuffers(1, &skybox_object_.vertex_AO);
 }
 
 ////////////////////////////// RENDERING //////////////////////////////
 
 void ApplicationSolar::render() const {
 
-    ///// FRAMEBUFFER SECTION /////
+    std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
+
+    ///// FRAMEBUFFER SECTION PART 1/2 /////
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -75,11 +87,6 @@ void ApplicationSolar::render() const {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDisable(GL_DEPTH_TEST);
-
-    std::shared_ptr<Node> scene_root = scene_graph_->getRoot();
-    int index = 0;
-
 
     ///// SKYBOX SECTION /////
 
@@ -97,6 +104,7 @@ void ApplicationSolar::render() const {
     glDepthFunc(GL_LESS);
     //glDepthMask(GL_TRUE);
 
+    int index = 0;
     // this should render like all of the solar bodies
     for (auto const &name: solar_bodies_geom_names_) {
         std::shared_ptr<Node> solar_body_geom = scene_root->getChildren(name);
@@ -234,6 +242,11 @@ void ApplicationSolar::render() const {
         glDrawArrays(orbit_object_.draw_mode, GLint(0), orbit_object_.num_elements);
     }
 
+    ///// FRAMEBUFFER SECTION PART 2/2 /////
+
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
 
 }
@@ -878,8 +891,8 @@ void ApplicationSolar::initializeTextures() {
 }
 
 bool ApplicationSolar::initializeFramebuffer() {
-    unsigned int width = initial_resolution.x;
-    unsigned int height = initial_resolution.y;
+    unsigned int width = initial_resolution_.x;
+    unsigned int height = initial_resolution_.y;
 
     glGenFramebuffers(1, &framebuffer_object_.handle);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_object_.handle);
